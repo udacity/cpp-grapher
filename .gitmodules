@@ -1,0 +1,15 @@
+[submodule "Sources/Tests/3rdParty/Catch"]
+	path = Sources/Tests/3rdParty/Catch
+	url = git@github.com:philsquared/Catch.git
+[submodule "Sources/Modules/3rdParty/utfcpp"]
+	path = Sources/Modules/3rdParty/utfcpp
+	url = https://github.com/nemtrif/utfcpp
+[submodule "Sources/Modules/3rdParty/any"]
+	path = Sources/Modules/3rdParty/any
+	url = git@github.com:thelink2012/any.git
+[submodule "Sources/Modules/3rdParty/Optional"]
+	path = Sources/Modules/3rdParty/Optional
+	url = git@github.com:akrzemi1/Optional.git
+[submodule "Sources/Modules/3rdParty/variant"]
+	path = Sources/Modules/3rdParty/variant
+	url = git@github.com:tcbrindle/variant.git
