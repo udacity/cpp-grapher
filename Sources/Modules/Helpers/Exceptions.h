@@ -1,6 +1,8 @@
 #ifndef EXCEPTIONS_H
 #define EXCEPTIONS_H
 
+#include "tinyutf8.h"
+
 class NotImplementedException : public std::runtime_error
 {
 public:
@@ -10,7 +12,7 @@ public:
 class InvalidArgumentException : public std::runtime_error
 {
 public:
-    InvalidArgumentException(std::string msg = "Invalid argument exception") : runtime_error(msg) {}
+    InvalidArgumentException(utf8_string msg = "Invalid argument exception") : runtime_error(msg.cpp_str()) {}
 };
 
 #endif // EXCEPTIONS_H

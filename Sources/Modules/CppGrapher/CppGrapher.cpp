@@ -12,7 +12,7 @@ std::string CppGrapher::Greet() const
 	return "Hello " + std::to_string(std::numeric_limits<size_t>::digits) + "-bit World!\n";
 }
 
-int CppGrapher::Main( const std::vector<std::string> args )
+int CppGrapher::Main( const std::vector<utf8_string> args )
 {
 	ValidateArgs(args);
 
@@ -20,7 +20,7 @@ int CppGrapher::Main( const std::vector<std::string> args )
 	return EXIT_SUCCESS;
 }
 
-void CppGrapher::ValidateArgs( const std::vector<std::string> args )
+void CppGrapher::ValidateArgs( const std::vector<utf8_string> args )
 {
 	//Ensure exactly one argument was provided (note: app name is always automatically provided by system)
     //args[0] is guarded because Main can be called with 0 args (eg. by driver or test)

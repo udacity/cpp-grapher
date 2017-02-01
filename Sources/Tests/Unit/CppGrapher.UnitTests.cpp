@@ -1,7 +1,7 @@
 #include <regex>
 #include "catch.hpp"
-#include "CppGrapher.h"
 #include "Helpers/Exceptions.h"
+#include "CppGrapher.h"
 
 SCENARIO("Ensure project can say hello")
 {
@@ -30,7 +30,7 @@ SCENARIO("Parsing command line arguments")
 
 		WHEN("two arguments are supplied")
 		{
-			auto args = std::vector<std::string> {"sample-arg1", "sample-arg2"};
+			auto args = std::vector<utf8_string> {"sample-arg1", "sample-arg2"};
 
 			THEN("it should not throw an InvalidArgumentException")
 			{
@@ -47,7 +47,7 @@ SCENARIO("Parsing command line arguments")
 
 		WHEN("no arguments are supplied")
 		{
-			auto args = std::vector<std::string> {};
+			auto args = std::vector<utf8_string> {};
 
 			THEN("it should throw an InvalidArgumentException")
 			{
@@ -57,7 +57,7 @@ SCENARIO("Parsing command line arguments")
 
 		AND_WHEN("one argument is supplied")
 		{
-			auto args = std::vector<std::string> {"sample-arg1"};
+			auto args = std::vector<utf8_string> {"sample-arg1"};
 
 			THEN("it should throw an InvalidArgumentsException")
 			{
@@ -67,7 +67,7 @@ SCENARIO("Parsing command line arguments")
 
 		AND_WHEN("three arguments are supplied")
 		{
-			auto args = std::vector<std::string> {"sample-arg1", "sample-arg2", "sample-arg3"};
+			auto args = std::vector<utf8_string> {"sample-arg1", "sample-arg2", "sample-arg3"};
 
 			THEN("it should throw an InvalidArgumentsException")
 			{

@@ -2,12 +2,12 @@
 #define FILESYSTEM_H
 
 #include <iostream>
-#include <string>
+#include "tinyutf8.h"
 
-std::string FilenameFromPath ( const std::string& path )
+utf8_string FilenameFromPath ( const utf8_string& path )
 {
-    auto pos = path.find_last_of("/\\");
-    return pos != std::string::npos ? path.substr( pos + 1 ) : path;
+    auto pos = path.find_last_of(U"/\\");
+    return pos != utf8_string::npos ? path.substr( pos + 1, utf8_string::npos ) : path;
 }
 
 #endif //FILESYSTEM_H
