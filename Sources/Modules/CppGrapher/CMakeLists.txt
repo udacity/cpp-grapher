@@ -1,7 +1,7 @@
-set(SOURCE_FILES Lib.cpp Lib.h)
-add_library(Lib ${SOURCE_FILES})
+set(SOURCE_FILES CppGrapher.cpp CppGrapher.h)
+add_library(CppGrapher ${SOURCE_FILES})
 
-target_include_directories(Lib
+target_include_directories(CppGrapher
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../
         PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/any/

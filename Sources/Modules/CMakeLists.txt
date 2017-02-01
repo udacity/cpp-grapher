@@ -1,2 +1,2 @@
-add_subdirectory(Lib)
-add_subdirectory(App)
+add_subdirectory(CppGrapher)
+add_subdirectory(cpp-grapher)

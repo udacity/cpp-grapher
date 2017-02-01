@@ -1,1 +1,1 @@
-set(UNIT_TEST_SOURCE_FILES Unit/Lib.UnitTests.cpp PARENT_SCOPE)
+set(UNIT_TEST_SOURCE_FILES Unit/CppGrapher.UnitTests.cpp PARENT_SCOPE)
