@@ -34,7 +34,14 @@ SCENARIO("Parsing command line arguments")
 
 			THEN("it should not throw an InvalidArgumentException")
 			{
-				REQUIRE_NOTHROW(app.Main(args));
+				try
+				{
+					app.Main(args);
+				}
+				catch(std::exception& e)
+				{
+					REQUIRE_THROWS_AS(throw, InvalidArgumentException);
+				}
 			}
 		}
 
@@ -44,7 +51,7 @@ SCENARIO("Parsing command line arguments")
 
 			THEN("it should throw an InvalidArgumentException")
 			{
-				REQUIRE_THROWS(app.Main(args));
+				REQUIRE_THROWS_AS(app.Main(args), InvalidArgumentException);
 			}
 		}
 
@@ -54,7 +61,7 @@ SCENARIO("Parsing command line arguments")
 
 			THEN("it should throw an InvalidArgumentsException")
 			{
-				REQUIRE_THROWS(app.Main(args));
+				REQUIRE_THROWS_AS(app.Main(args), InvalidArgumentException);
 			}
 		}
 
@@ -64,7 +71,7 @@ SCENARIO("Parsing command line arguments")
 
 			THEN("it should throw an InvalidArgumentsException")
 			{
-				REQUIRE_THROWS(app.Main(args));
+				REQUIRE_THROWS_AS(app.Main(args), InvalidArgumentException);
 			}
 		}
 	}

@@ -17,7 +17,6 @@ int CppGrapher::Main( const std::vector<std::string> args )
 	ValidateArgs(args);
 
 	auto hello = CppGrapher();
-	std::cout << hello.Greet() << args.size() << "args found" << std::endl;
 	return EXIT_SUCCESS;
 }
 
