@@ -23,8 +23,8 @@ Sources/Tests/Tests
 ### Build project & run application (assuming you are in the project root folder, as per above instructions)
 ```
 mkdir -p build && cd build
-cmake -G "Unix Makefiles" .. -DCMAKE_BUILD_TYPE=Release && cmake --build . --target App
-Sources/Modules/App/App
+cmake -G "Unix Makefiles" .. -DCMAKE_BUILD_TYPE=Release && cmake --build . --target cpp-grapher
+Sources/Modules/cpp-grapher/cpp-grapher
 ```
 
 ### IDE Support
