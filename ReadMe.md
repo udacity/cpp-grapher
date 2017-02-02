@@ -34,5 +34,5 @@ If you are more comfortable with GUI-based development, I recommend taking a loo
 - [any](https://github.com/thelink2012/any/blob/master/LICENSE_1_0.txt)
 - [Catch](https://github.com/philsquared/Catch/blob/master/LICENSE_1_0.txt)
 - [Optional](https://github.com/akrzemi1/Optional/blob/master/LICENSE_1_0.txt)
-- [utfcpp](https://github.com/nemtrif/utfcpp/blob/master/source/utf8.h)
+- [tinyutf8](https://github.com/bradleygibson/tinyutf8/blob/master/LICENCE)
 - [variant](https://github.com/tcbrindle/variant/blob/master/variant)
