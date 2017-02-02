@@ -7,12 +7,15 @@
 /// The application logic is written as a library to enable flexible packaging (static or dynamic linking) and
 /// execution from a test runner, application driver (this class), or other driver.  Entry point for execution is
 /// Main().
+struct KalmanFilterDataPoint
+{
+    utf8_string name;
+    double x, y;
+};
+
 class CppGrapher
 {
 public:
-	/// Returns a "Hello, world"-style greeting to the caller
-	std::string Greet() const;
-
 	/// Safe application Main() implementation.
 	/// The traditional C-style practice of using argv + argc is an example of a "buffer + length" anti-pattern.
 	/// Because the two must be manually coupled, this pattern has not only been shown to be a source of bugs (eg.
@@ -27,7 +30,8 @@ public:
 	int Main( const std::vector<utf8_string> args );
 
 private:
-	void ValidateArgs( const std::vector<utf8_string> args );
+	void ValidateArgs( const std::vector<utf8_string> args ) const;
+    std::vector<KalmanFilterDataPoint> ReadData( const utf8_string filename ) const;
 };
 
 /// \example ../Tests/Unit/Lib.UnitTests.cpp

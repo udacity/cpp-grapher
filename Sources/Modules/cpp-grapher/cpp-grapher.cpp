@@ -2,6 +2,7 @@
 #include <string>
 #include <cstdlib>
 #include <iostream>
+#include <Helpers/Filesystem.h>
 
 #include "CppGrapher.h"
 
