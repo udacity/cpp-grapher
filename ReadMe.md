@@ -23,8 +23,8 @@ Sources/Tests/Tests
 ### Build project & run application (assuming you are in the project root folder, as per above instructions)
 ```
 mkdir -p build && cd build
-cmake -G "Unix Makefiles" .. -DCMAKE_BUILD_TYPE=Release && cmake --build . --target App
-Sources/Modules/App/App
+cmake -G "Unix Makefiles" .. -DCMAKE_BUILD_TYPE=Release && cmake --build . --target cpp-grapher
+Sources/Modules/cpp-grapher/cpp-grapher
 ```
 
 ### IDE Support
@@ -34,5 +34,5 @@ If you are more comfortable with GUI-based development, I recommend taking a loo
 - [any](https://github.com/thelink2012/any/blob/master/LICENSE_1_0.txt)
 - [Catch](https://github.com/philsquared/Catch/blob/master/LICENSE_1_0.txt)
 - [Optional](https://github.com/akrzemi1/Optional/blob/master/LICENSE_1_0.txt)
-- [utfcpp](https://github.com/nemtrif/utfcpp/blob/master/source/utf8.h)
+- [tinyutf8](https://github.com/bradleygibson/tinyutf8/blob/master/LICENCE)
 - [variant](https://github.com/tcbrindle/variant/blob/master/variant)
