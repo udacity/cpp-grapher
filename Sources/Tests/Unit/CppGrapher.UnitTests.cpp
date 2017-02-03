@@ -12,7 +12,7 @@ SCENARIO("Parsing command line arguments")
 
         WHEN( "two arguments are supplied" )
         {
-            auto args = std::vector<utf8_string> { "sample-arg1", "sample-arg2" };
+            auto args = std::vector<utf8_string> { u8"sample-arg1", u8"sample-arg2" };
 
             THEN( "it should not throw an InvalidArgumentException" )
             {
@@ -39,7 +39,7 @@ SCENARIO("Parsing command line arguments")
 
         AND_WHEN( "one argument is supplied" )
         {
-            auto args = std::vector<utf8_string> { "sample-arg1" };
+            auto args = std::vector<utf8_string> { u8"sample-arg1" };
 
             THEN( "it should throw an InvalidArgumentsException" )
             {
@@ -49,7 +49,7 @@ SCENARIO("Parsing command line arguments")
 
         AND_WHEN( "three arguments are supplied" )
         {
-            auto args = std::vector<utf8_string> { "sample-arg1", "sample-arg2", "sample-arg3" };
+            auto args = std::vector<utf8_string> { u8"sample-arg1", u8"sample-arg2", u8"sample-arg3" };
 
             THEN( "it should throw an InvalidArgumentsException" )
             {
@@ -67,10 +67,10 @@ SCENARIO("validating the data file")
 
         WHEN("the app is given a non-existent data file to read")
         {
-            auto filename = utf8_string( "cpp-grapher-test.should-not-exist" );
+            auto filename = utf8_string( u8"cpp-grapher-test.should-not-exist" );
             std::remove( filename.c_str() );
 
-            auto args = std::vector<utf8_string> { "cpp-grapher", filename };
+            auto args = std::vector<utf8_string> { u8"cpp-grapher_via-test-runner", filename };
 
             THEN("the app should throw a NonExistentFileException")
             {
@@ -80,14 +80,28 @@ SCENARIO("validating the data file")
 
         AND_WHEN("the app is given an existing but empty data file to read")
         {
-            auto filename = utf8_string( "cpp-grapher-test.should-exist" );
+            auto filename = utf8_string( u8"cpp-grapher-test.should-exist" );
             auto fs = TemporaryFileStream( filename );
 
-            auto args = std::vector<utf8_string> { "cpp-grapher", filename };
+            auto args = std::vector<utf8_string> { u8"cpp-grapher_via-test-runner", filename };
 
             THEN("the app should throw a NoDataFoundException")
             {
                 REQUIRE_THROWS_AS( app.Main( args ), NoDataFoundException );
+            }
+        }
+
+        AND_WHEN("a file with valid data is provided")
+        {
+            auto filename = utf8_string( u8"cpp-grapher-test.invalid-data" );
+            auto fileContents = u8"test_name 1.0 2.0";
+            auto fs = TemporaryFileStream( filename, fileContents );
+
+            auto args = std::vector<utf8_string> { u8"cpp-grapher_via-test-runner", filename };
+
+            THEN( "the app should return EXIT_SUCCESS" )
+            {
+                REQUIRE( app.Main( args ) == EXIT_SUCCESS );
             }
         }
     }

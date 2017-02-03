@@ -49,7 +49,7 @@ std::vector<KalmanFilterDataPoint> CppGrapher::ParseKalmanFilterDataLine( std::i
 
     while ( std::getline( ifs, line ) )
     {
-        points.push_back( ParseKalmanFilterDataTokens( utf8_string( line )));
+        points.push_back( ParseKalmanFilterDataTokens( utf8_string( line + "\n" )));
     }
     if( points.size() == 0 ) { throw NoDataFoundException(); }
 
@@ -82,7 +82,7 @@ std::tuple<utf8_string::size_type, utf8_string::size_type> CppGrapher::FindNextT
                                                                 const utf8_string& line,
                                                                 utf8_string::size_type& pos ) const
 {
-    auto beg = line.find_first_not_of( UnicodeLiterals::WHITESPACE );
+    auto beg = line.find_first_not_of( UnicodeLiterals::WHITESPACE, pos );
     if ( beg == utf8_string::npos ) { throw TokenNotFoundException(); }
 
     auto end = line.find_first_of( UnicodeLiterals::WHITESPACE, beg );
