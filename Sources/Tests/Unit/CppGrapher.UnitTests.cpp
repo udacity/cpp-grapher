@@ -61,37 +61,37 @@ SCENARIO("Parsing command line arguments")
 
 SCENARIO("validating the data file")
 {
-	GIVEN("an app instance")
-	{
-		auto app = CppGrapher();
+    GIVEN( "an app instance" )
+    {
+        auto app = CppGrapher();
 
-        WHEN("the app is given a non-existent data file to read")
+        WHEN( "the app is given a non-existent data file to read" )
         {
             auto filename = utf8_string( u8"cpp-grapher-test.should-not-exist" );
-            std::remove( filename.c_str() );
+            std::remove( filename.c_str());
 
             auto args = std::vector<utf8_string> { u8"cpp-grapher_via-test-runner", filename };
 
-            THEN("the app should throw an exception")
+            THEN( "the app should throw an exception" )
             {
-                REQUIRE_THROWS_AS( app.Main( args ),std::ios_base::failure );
+                REQUIRE_THROWS_AS( app.Main( args ), std::ios_base::failure );
             }
         }
 
-        AND_WHEN("the app is given an existing but empty data file to read")
+        AND_WHEN( "the app is given an existing but empty data file to read" )
         {
             auto filename = utf8_string( u8"cpp-grapher-test.should-exist" );
             auto fs = TemporaryFileStream( filename );
 
             auto args = std::vector<utf8_string> { u8"cpp-grapher_via-test-runner", filename };
 
-            THEN("the app should throw an exception")
+            THEN( "the app should throw an exception" )
             {
                 REQUIRE_THROWS_AS( app.Main( args ), NoDataFoundException );
             }
         }
 
-        AND_WHEN("a file with valid data is provided")
+        AND_WHEN( "a file with valid data is provided" )
         {
             auto filename = utf8_string( u8"cpp-grapher-test.valid-data" );
             auto fileContents = u8"test_name 1.0 2.0";
@@ -105,20 +105,17 @@ SCENARIO("validating the data file")
             }
         }
 
-        GIVEN("invalid data file to read")
+        AND_WHEN( "an incomplete dataset is provided" )
         {
-            WHEN("an incomplete dataset is provided")
+            auto filename = utf8_string( u8"cpp-grapher-test.invalid-data" );
+            auto fileContents = u8"test_name";
+            auto fs = TemporaryFileStream( filename, fileContents );
+
+            auto args = std::vector<utf8_string> { u8"cpp-grapher_via-test-runner", filename };
+
+            THEN( "the app should throw an exception" )
             {
-                auto filename = utf8_string( u8"cpp-grapher-test.invalid-data" );
-                auto fileContents = u8"test_name";
-                auto fs = TemporaryFileStream( filename, fileContents );
-
-                auto args = std::vector<utf8_string> { u8"cpp-grapher_via-test-runner", filename };
-
-                THEN( "the app should throw an exception" )
-                {
-                    REQUIRE_THROWS_AS( app.Main( args ), NoDataFoundException );
-                }
+                REQUIRE_THROWS_AS( app.Main( args ), TokenNotFoundException );
             }
         }
     }
