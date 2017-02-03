@@ -21,7 +21,7 @@ public:
         if(filename_ == "") { throw InvalidArgumentException(Msg::InvalidArg::FILENAME_CANNOT_BE_NULL); };
 
         auto ofs = std::ofstream(filename_.cpp_str());
-        ofs << contents.cpp_str(true);
+        ofs << contents.cpp_str();
     }
 
     ~TemporaryFileStream()

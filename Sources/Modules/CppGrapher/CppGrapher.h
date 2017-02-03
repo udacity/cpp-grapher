@@ -2,6 +2,7 @@
 #define CPP_GRAPHER_H
 
 #include <vector>
+#include <fstream>
 #include "tinyutf8.h"
 
 /// The application logic is written as a library to enable flexible packaging (static or dynamic linking) and
@@ -27,11 +28,21 @@ public:
 	/// @returns                execution status code (typically EXIT_SUCCESS, as App will throw if it encounters an
 	///                         error.)
 	/// @throws                 May throw an InvalidArgumentException.
-	int Main( const std::vector<utf8_string> args );
+	int Main( const std::vector<utf8_string>& args );
 
 private:
-	void ValidateArgs( const std::vector<utf8_string> args ) const;
-    std::vector<KalmanFilterDataPoint> ReadData( const utf8_string filename ) const;
+	void ValidateArgs( const std::vector<utf8_string>& args ) const;
+    std::vector<KalmanFilterDataPoint> ParseKalmanFilterDataFile( const utf8_string& filename ) const;
+	std::vector<KalmanFilterDataPoint> ParseKalmanFilterDataLine( std::ifstream& ifs ) const;
+
+    KalmanFilterDataPoint ParseKalmanFilterDataTokens( const utf8_string& utf8_string ) const;
+
+    utf8_string ParseKalmanFilterName( const utf8_string& utf8_string, utf8_string::size_type& pos ) const;
+
+    double ParseKalmanFilterPoint( const utf8_string& utf8_string, utf8_string::size_type& pos ) const;
+
+    std::tuple<utf8_string::size_type, utf8_string::size_type> FindNextToken( const utf8_string& utf8_string,
+                                                                              utf8_string::size_type& pos ) const;
 };
 
 /// \example ../Tests/Unit/Lib.UnitTests.cpp

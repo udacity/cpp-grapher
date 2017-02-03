@@ -58,6 +58,7 @@ SCENARIO("Parsing command line arguments")
         }
     }
 }
+
 SCENARIO("validating the data file")
 {
 	GIVEN("an app instance")
@@ -80,13 +81,13 @@ SCENARIO("validating the data file")
         AND_WHEN("the app is given an existing but empty data file to read")
         {
             auto filename = utf8_string( "cpp-grapher-test.should-exist" );
-            auto TemporaryFileStream( filename );
+            auto fs = TemporaryFileStream( filename );
 
             auto args = std::vector<utf8_string> { "cpp-grapher", filename };
 
-            THEN("the app should throw a NonExistentFileException")
+            THEN("the app should throw a NoDataFoundException")
             {
-                REQUIRE_THROWS_AS( app.Main( args ), InvalidFileFormatException );
+                REQUIRE_THROWS_AS( app.Main( args ), NoDataFoundException );
             }
         }
     }

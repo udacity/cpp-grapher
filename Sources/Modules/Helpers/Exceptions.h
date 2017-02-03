@@ -12,13 +12,19 @@ public:
 class InvalidArgumentException : public std::runtime_error
 {
 public:
-    InvalidArgumentException(utf8_string msg = u8"Invalid argument exception") : runtime_error(msg.cpp_str()) {}
+    InvalidArgumentException(utf8_string msg = u8"Invalid argument received") : runtime_error(msg.cpp_str()) {}
 };
 
-class NonExistentFileException : public std::runtime_error
+class TokenNotFoundException : public std::runtime_error
 {
 public:
-    NonExistentFileException(utf8_string msg = u8"Non-existent file exception") : runtime_error(msg.cpp_str()) {}
+    TokenNotFoundException(utf8_string msg = u8"Expected token not found") : runtime_error(msg.cpp_str()) {}
+};
+
+class NoDataFoundException : public std::runtime_error
+{
+public:
+    NoDataFoundException(utf8_string msg = u8"No data found") : runtime_error(msg.cpp_str()) {}
 };
 
 #endif // EXCEPTIONS_H
