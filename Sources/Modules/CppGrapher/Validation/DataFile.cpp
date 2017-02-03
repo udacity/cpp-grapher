@@ -15,25 +15,27 @@ std::vector<KalmanFilterDataPoint> CppGrapher::ParseKalmanFilterDataFile( const 
 {
     auto ifs = std::ifstream();
     ifs.exceptions( ifs.exceptions() | std::ios::failbit );
-    ifs.open( filename.cpp_str());
-    return ParseKalmanFilterDataLine( ifs );
-}
-
-std::vector<KalmanFilterDataPoint> CppGrapher::ParseKalmanFilterDataLine( std::ifstream& ifs ) const
-{
-    auto points = std::vector<KalmanFilterDataPoint> {};
-    std::string line;
-
-    while ( std::getline( ifs, line ) )
+    try
     {
-        points.push_back( ParseKalmanFilterDataTokens( utf8_string( line + "\n" )));
-    }
-    if( points.size() == 0 ) { throw NoDataFoundException(); }
+        ifs.open( filename.cpp_str());
 
-    return points;
+        auto points = std::vector<KalmanFilterDataPoint> {};
+        std::string line;
+        while ( std::getline( ifs, line ) )
+        {
+            points.push_back( ParseKalmanFilterDataLine( utf8_string( line + "\n" )));
+        }
+        if( points.size() == 0 ) { throw NoDataFoundException(); }
+
+        return points;
+    }
+    catch(std::ios_base::failure& e)
+    {
+        throw FileNotFoundException("File '" + filename.cpp_str() +"' not found.");
+    }
 }
 
-KalmanFilterDataPoint CppGrapher::ParseKalmanFilterDataTokens( const utf8_string& line ) const
+KalmanFilterDataPoint CppGrapher::ParseKalmanFilterDataLine( const utf8_string& line ) const
 {
     auto dataPoint = KalmanFilterDataPoint();
     auto idx = utf8_string::size_type( 0 );

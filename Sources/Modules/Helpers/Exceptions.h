@@ -33,4 +33,11 @@ public:
     BadDataException(utf8_string msg = u8"Bad data found") : runtime_error(msg.cpp_str()) {}
 };
 
+class FileNotFoundException : public std::runtime_error
+{
+public:
+    FileNotFoundException(utf8_string msg = u8"File not found") : runtime_error(msg.cpp_str()) {}
+};
+
+
 #endif // EXCEPTIONS_H
