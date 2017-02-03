@@ -75,7 +75,16 @@ utf8_string CppGrapher::ParseKalmanFilterName( const utf8_string& line, utf8_str
 
 double CppGrapher::ParseKalmanFilterPoint( const utf8_string& line, utf8_string::size_type& pos ) const
 {
-    return std::stod(ParseKalmanFilterName(line, pos).cpp_str());
+    //If user provides a non-double value, provide a friendlier error message
+    try
+    {
+        return std::stod( ParseKalmanFilterName( line, pos ).cpp_str());
+    }
+    catch ( std::invalid_argument& e )
+    {
+        throw BadDataException(
+            u8"Non-numeric data found for Kalman Filter point.  Ensure x and y are numeric values." );
+    }
 }
 
 std::tuple<utf8_string::size_type, utf8_string::size_type> CppGrapher::FindNextToken(

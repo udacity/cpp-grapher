@@ -27,4 +27,10 @@ public:
     NoDataFoundException(utf8_string msg = u8"No data found") : runtime_error(msg.cpp_str()) {}
 };
 
+class BadDataException : public std::runtime_error
+{
+public:
+    BadDataException(utf8_string msg = u8"Bad data found") : runtime_error(msg.cpp_str()) {}
+};
+
 #endif // EXCEPTIONS_H

@@ -105,7 +105,7 @@ SCENARIO("validating the data file")
             }
         }
 
-        AND_WHEN( "an incomplete dataset is provided" )
+        AND_WHEN( "a dataset with missing tokens is provided" )
         {
             auto filename = utf8_string( u8"cpp-grapher-test.invalid-data" );
             auto fileContents = u8"test_name";
@@ -118,5 +118,20 @@ SCENARIO("validating the data file")
                 REQUIRE_THROWS_AS( app.Main( args ), TokenNotFoundException );
             }
         }
+
+        AND_WHEN( "a dataset with invalid numeric tokens is provided" )
+        {
+            auto filename = utf8_string( u8"cpp-grapher-test.invalid-data" );
+            auto fileContents = u8"test_name not_a_number1 not_a_number2";
+            auto fs = TemporaryFileStream( filename, fileContents );
+
+            auto args = std::vector<utf8_string> { u8"cpp-grapher_via-test-runner", filename };
+
+            THEN( "the app should throw an exception" )
+            {
+                REQUIRE_THROWS_AS( app.Main( args ), BadDataException );
+            }
+        }
+
     }
 }
