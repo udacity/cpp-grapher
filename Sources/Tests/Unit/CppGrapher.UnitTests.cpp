@@ -133,6 +133,20 @@ SCENARIO("validating the data file")
             }
         }
 
+        AND_WHEN( "an invalid file with bad delimiters is provided" )
+        {
+            auto filename = utf8_string( u8"cpp-grapher-test.valid-data" );
+            auto fileContents = u8"test_name,1.0;2.0";
+            auto fs = TemporaryFileStream( filename, fileContents );
+
+            auto args = std::vector<utf8_string> { u8"cpp-grapher_via-test-runner", filename };
+
+            THEN( "the app should throw an exception" )
+            {
+                REQUIRE_THROWS_AS( app.Main( args ), TokenNotFoundException );
+            }
+        }
+
         AND_WHEN( "a dataset with missing tokens is provided" )
         {
             auto filename = utf8_string( u8"cpp-grapher-test.invalid-data" );
