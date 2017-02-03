@@ -14,7 +14,7 @@ SCENARIO("Parsing command line arguments")
         {
             auto args = std::vector<utf8_string> { u8"sample-arg1", u8"sample-arg2" };
 
-            THEN( "it should not throw an InvalidArgumentException" )
+            THEN( "it should not throw an exception" )
             {
                 try
                 {
@@ -31,7 +31,7 @@ SCENARIO("Parsing command line arguments")
         {
             auto args = std::vector<utf8_string> {};
 
-            THEN( "it should throw an InvalidArgumentException" )
+            THEN( "it should throw an exception" )
             {
                 REQUIRE_THROWS_AS( app.Main( args ), InvalidArgumentException );
             }
@@ -41,7 +41,7 @@ SCENARIO("Parsing command line arguments")
         {
             auto args = std::vector<utf8_string> { u8"sample-arg1" };
 
-            THEN( "it should throw an InvalidArgumentsException" )
+            THEN( "it should throw an exception" )
             {
                 REQUIRE_THROWS_AS( app.Main( args ), InvalidArgumentException );
             }
@@ -51,7 +51,7 @@ SCENARIO("Parsing command line arguments")
         {
             auto args = std::vector<utf8_string> { u8"sample-arg1", u8"sample-arg2", u8"sample-arg3" };
 
-            THEN( "it should throw an InvalidArgumentsException" )
+            THEN( "it should throw an exception" )
             {
                 REQUIRE_THROWS_AS( app.Main( args ), InvalidArgumentException );
             }
@@ -72,7 +72,7 @@ SCENARIO("validating the data file")
 
             auto args = std::vector<utf8_string> { u8"cpp-grapher_via-test-runner", filename };
 
-            THEN("the app should throw a NonExistentFileException")
+            THEN("the app should throw an exception")
             {
                 REQUIRE_THROWS_AS( app.Main( args ),std::ios_base::failure );
             }
@@ -85,7 +85,7 @@ SCENARIO("validating the data file")
 
             auto args = std::vector<utf8_string> { u8"cpp-grapher_via-test-runner", filename };
 
-            THEN("the app should throw a NoDataFoundException")
+            THEN("the app should throw an exception")
             {
                 REQUIRE_THROWS_AS( app.Main( args ), NoDataFoundException );
             }
@@ -93,15 +93,32 @@ SCENARIO("validating the data file")
 
         AND_WHEN("a file with valid data is provided")
         {
-            auto filename = utf8_string( u8"cpp-grapher-test.invalid-data" );
+            auto filename = utf8_string( u8"cpp-grapher-test.valid-data" );
             auto fileContents = u8"test_name 1.0 2.0";
             auto fs = TemporaryFileStream( filename, fileContents );
 
             auto args = std::vector<utf8_string> { u8"cpp-grapher_via-test-runner", filename };
 
-            THEN( "the app should return EXIT_SUCCESS" )
+            THEN( "the app should return successfully" )
             {
                 REQUIRE( app.Main( args ) == EXIT_SUCCESS );
+            }
+        }
+
+        GIVEN("invalid data file to read")
+        {
+            WHEN("an incomplete dataset is provided")
+            {
+                auto filename = utf8_string( u8"cpp-grapher-test.invalid-data" );
+                auto fileContents = u8"test_name";
+                auto fs = TemporaryFileStream( filename, fileContents );
+
+                auto args = std::vector<utf8_string> { u8"cpp-grapher_via-test-runner", filename };
+
+                THEN( "the app should throw an exception" )
+                {
+                    REQUIRE_THROWS_AS( app.Main( args ), NoDataFoundException );
+                }
             }
         }
     }
