@@ -105,7 +105,7 @@ SCENARIO("validating the data file")
             }
         }
 
-        AND_WHEN( "a multi-line file with valid data is provided" )
+        AND_WHEN( "a valid multi-line file with valid data is provided" )
         {
             auto filename = utf8_string( u8"cpp-grapher-test.valid-data" );
             auto fileContents = u8"test_line_1 1.0 2.0\ntest_line_2 3.0 4\ntest_line_3 5.1 6.2";
