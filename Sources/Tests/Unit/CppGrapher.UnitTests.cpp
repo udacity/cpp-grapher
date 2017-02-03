@@ -119,6 +119,20 @@ SCENARIO("validating the data file")
             }
         }
 
+        AND_WHEN( "a valid file with 'esoteric' whitespace is provided" )
+        {
+            auto filename = utf8_string( u8"cpp-grapher-test.valid-data" );
+            auto fileContents = u8"test_line_1\t1.0\r2.0\ntest_line_2\v3.0\u205f4\ntest_line_3 5.1 6.2";
+            auto fs = TemporaryFileStream( filename, fileContents );
+
+            auto args = std::vector<utf8_string> { u8"cpp-grapher_via-test-runner", filename };
+
+            THEN( "the app should return successfully" )
+            {
+                REQUIRE( app.Main( args ) == EXIT_SUCCESS );
+            }
+        }
+
         AND_WHEN( "a dataset with missing tokens is provided" )
         {
             auto filename = utf8_string( u8"cpp-grapher-test.invalid-data" );
