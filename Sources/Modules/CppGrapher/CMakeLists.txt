@@ -1,4 +1,5 @@
-set(SOURCE_FILES CppGrapher.cpp CppGrapher.h ../3rdParty/tinyutf8/tinyutf8.cpp ../3rdParty/tinyutf8/tinyutf8.h ../Helpers/Unicode.h)
+
+set(SOURCE_FILES CppGrapher.cpp CppGrapher.h Validation/Argument.cpp Validation/DataFile.cpp ../3rdParty/tinyutf8/tinyutf8.cpp ../3rdParty/tinyutf8/tinyutf8.h ../Helpers/Unicode.h)
 add_library(CppGrapher ${SOURCE_FILES})
 
 target_include_directories(CppGrapher

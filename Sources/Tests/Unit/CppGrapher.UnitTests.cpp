@@ -12,9 +12,9 @@ SCENARIO("Parsing command line arguments")
 
         WHEN( "two arguments are supplied" )
         {
-            auto args = std::vector<utf8_string> { u8"sample-arg1", u8"sample-arg2" };
+            auto args = std::vector<utf8_string> { u8"cpp-grapher_via-test-runner", u8"cpp-grapher-test.should-not-exist" };
 
-            THEN( "it should not throw an exception" )
+            THEN( "it should not throw an invalid arguments exception" )
             {
                 try
                 {
@@ -22,7 +22,7 @@ SCENARIO("Parsing command line arguments")
                 }
                 catch ( std::exception& e )
                 {
-                    REQUIRE_THROWS_AS( throw, std::ios_base::failure );
+                    REQUIRE_THROWS_AS( throw, FileNotFoundException );
                 }
             }
         }
@@ -74,7 +74,7 @@ SCENARIO("validating the data file")
 
             THEN( "the app should throw an exception" )
             {
-                REQUIRE_THROWS_AS( app.Main( args ), std::ios_base::failure );
+                REQUIRE_THROWS_AS( app.Main( args ), FileNotFoundException);
             }
         }
 
