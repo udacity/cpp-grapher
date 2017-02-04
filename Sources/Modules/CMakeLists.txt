@@ -1,2 +1,4 @@
-add_subdirectory(CppGrapher)
+add_subdirectory(3rdParty)
 add_subdirectory(cpp-grapher)
+add_subdirectory(CppGrapher)
+add_subdirectory(Helpers)

@@ -39,7 +39,7 @@ SCENARIO("Parsing command line arguments")
 
         AND_WHEN( "one argument is supplied" )
         {
-            auto args = std::vector<utf8_string> { u8"sample-arg1" };
+            auto args = std::vector<utf8_string> { u8"cpp-grapher_via-test-runner" };
 
             THEN( "it should throw an exception" )
             {
@@ -49,7 +49,7 @@ SCENARIO("Parsing command line arguments")
 
         AND_WHEN( "three arguments are supplied" )
         {
-            auto args = std::vector<utf8_string> { u8"sample-arg1", u8"sample-arg2", u8"sample-arg3" };
+            auto args = std::vector<utf8_string> { u8"cpp-grapher_via-test-runner", u8"sample-arg2", u8"sample-arg3" };
 
             THEN( "it should throw an exception" )
             {

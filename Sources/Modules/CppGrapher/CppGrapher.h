@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <fstream>
+
+//save compiler switches - external libs often can't handle ultra-strict compiler settings
 #include "tinyutf8.h"
 
 /// The application logic is written as a library to enable flexible packaging (static or dynamic linking) and
