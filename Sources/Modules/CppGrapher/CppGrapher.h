@@ -20,13 +20,13 @@ struct KalmanFilterDataPoint
 class CppGrapher
 {
 public:
-	/// Main() is the application entry (starting) point.
+    /// Main() is the application entry (starting) point.
     ///
-	/// The traditional C-style practice of using argv + argc is an example of a "buffer + length" anti-pattern.
-	/// Because the two must be manually coupled, this pattern has not only been shown to be a source of bugs (eg.
-	/// off-by-one errors or buffer-a + length-of-buffer-b-errors) but also a security vulnerability (whenever the two
-	/// are misaligned, we risk enabling an exploit).  Using a buffer which manages its own length (ie. std::vector)
-	/// ensures these kinds of issues cannot happen.
+    /// The traditional C-style practice of using argv + argc is an example of a "buffer + length" anti-pattern.
+    /// Because the two must be manually coupled, this pattern has not only been shown to be a source of bugs (eg.
+    /// off-by-one errors or buffer-a + length-of-buffer-b-errors) but also a security vulnerability (whenever the two
+    /// are misaligned, we risk enabling an exploit).  Using a buffer which manages its own length (ie. std::vector)
+    /// ensures these kinds of issues cannot happen.
     ///
     /// All strings managed by this app are strongly-typed UTF-8 strings, which permit the use and proper operation
     /// of any Unicode code point.  All operations on strings are Unicode-compliant, except for equality, which will
@@ -41,12 +41,12 @@ public:
     /// Note: this kind of issue is known as semantic types and can lead to real issues when ignored or not properly
     /// handled (eg. http://www.cnn.com/TECH/space/9909/30/mars.metric.02)
     ///
-	/// @param args[in]         A vector of UTF-8 strings representing the arguments given to the program.
-	///                         Note: the system always provides the application's name as args[0].
-	/// @returns                Execution status code (typically EXIT_SUCCESS, as App will throw if it encounters an
-	///                         error).
-	/// @throws                 May throw any std::exception listed by any method in the CppGrapher class (see below).
-	int Main( const std::vector<utf8_string>& args );
+    /// @param args[in]         A vector of UTF-8 strings representing the arguments given to the program.
+    ///                         Note: the system always provides the application's name as args[0].
+    /// @returns                Execution status code (typically EXIT_SUCCESS, as App will throw if it encounters an
+    ///                         error).
+    /// @throws                 May throw any std::exception listed by any method in the CppGrapher class (see below).
+    int Main(const std::vector<utf8_string>& args);
 
     //Protected allows tests to access 'private' methods via subclassing.
 protected:
@@ -54,7 +54,7 @@ protected:
     ///
     /// @param args[in]         A vector of UTF-8 strings representing the arguments given to the program.
     /// @throws                 Typically, InvalidArgumentException.
-	void ValidateArgs( const std::vector<utf8_string>& args ) const;
+    void ValidateArgs(const std::vector<utf8_string>& args) const;
 
     /// Deserialize a data file--expected to be a series of whitespace-delimited elements of type
     /// string double double, one set of elements per line.
@@ -66,7 +66,7 @@ protected:
     /// @returns                A vector of KalmanFilterDataPoints representing the deserialized file.
     /// @throws                 Typically, FileNotFoundException, NoDataFoundException, plus any exceptions thrown by
     ///                         CppGrapher::ParseKalmanFilterPoint() and CppGrapher::FindNextToken().
-    std::vector<KalmanFilterDataPoint> ParseKalmanFilterDataFile( const utf8_string& filename ) const;
+    std::vector<KalmanFilterDataPoint> ParseKalmanFilterDataFile(const utf8_string& filename) const;
 
     /// Deserialize one line of the data file--expected to be a string, a double and another double delimited by
     /// whitespace.  All three data elements are expected to be on the same line.  Additional data elements on the
@@ -75,7 +75,7 @@ protected:
     /// @param line[in]         A UTF-8 string containing the line of the file to be processed.
     /// @returns                A KalmanFilterDataPoint
     /// @throws                 Typically, any exceptions thrown by CppGrapher::FindNextToken().
-    KalmanFilterDataPoint ParseKalmanFilterDataLine( const utf8_string& line ) const;
+    KalmanFilterDataPoint ParseKalmanFilterDataLine(const utf8_string& line) const;
 
     /// Deserialize the first non-whitespace data element found starting at pos and return it as a string
     ///
@@ -85,7 +85,7 @@ protected:
     ///                         token.
     /// @returns                The found token, returned as a string.
     /// @throws                 Typically, any exceptions thrown by CppGrapher::FindNextToken().
-    utf8_string ParseKalmanFilterName( const utf8_string& line, utf8_string::size_type& pos ) const;
+    utf8_string ParseKalmanFilterName(const utf8_string& line, utf8_string::size_type& pos) const;
 
     /// Deserialize the first non-whitespace data element found starting at pos and return it as a
     /// double (IEEE-754 double-precision floating point value).
@@ -96,7 +96,7 @@ protected:
     ///                         token.
     /// @returns                The found token, returned as a double.
     /// @throws                 Typically, BadDataException plus any exceptions thrown by CppGrapher::FindNextToken().
-    double ParseKalmanFilterPoint( const utf8_string& line, utf8_string::size_type& pos ) const;
+    double ParseKalmanFilterPoint(const utf8_string& line, utf8_string::size_type& pos) const;
 
     /// Find the bounds of the next contiguous block on non-whitespace data starting at codepoint index pos and return
     /// it as a half-open range in a 2-element tuple (start-index, one-past-end-index).
@@ -108,8 +108,8 @@ protected:
     /// @returns                The codepoint (not byte!) range of the found token, returned as a half-open range--from
     ///                         start-index (inclusive) to end-index (exclusive).
     /// @throws                 Typically, TokenNotFoundException.
-    std::tuple<utf8_string::size_type, utf8_string::size_type> FindNextToken( const utf8_string& line,
-                                                                              utf8_string::size_type& pos ) const;
+    std::tuple<utf8_string::size_type, utf8_string::size_type> FindNextToken(const utf8_string& line,
+                                                                             utf8_string::size_type& pos) const;
 
     Magick::Image MakeDefaultGraph();
 };

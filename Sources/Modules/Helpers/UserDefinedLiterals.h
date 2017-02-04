@@ -40,8 +40,11 @@ template<char... chars> constexpr isz operator""_isz() { return {LiteralParser<0
 template<char... chars> constexpr usz operator""_usz() { return {LiteralParser<0, chars...>::value}; }
 
 //Add support for floating point formats
-inline f32 operator"" _f32(long double v) { return v; }
-inline f64 operator"" _f64(long double v) { return v; }
-inline f80 operator""_f80(long double v) { return v; }
+constexpr f32 operator"" _f32(long double v) { return v; }
+constexpr f64 operator"" _f64(long double v) { return v; }
+constexpr f80 operator""_f80(long double v) { return v; }
 
+constexpr f32 operator"" _f32(unsigned long long v) { return static_cast<double>(v); }
+constexpr f64 operator"" _f64(unsigned long long v) { return static_cast<double>(v); }
+constexpr f80 operator""_f80(unsigned long long v) { return static_cast<double>(v); }
 #endif //USER_DEFINED_LITERALS_H

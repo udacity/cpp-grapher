@@ -16,6 +16,6 @@ using usz = std::size_t;
 
 using f32 = float;
 using f64 = double;
-using f80 = long double;
+using f80 = long double;    //implementation-dependent; may yield f64 or even f32 on some systems
 
 #endif // ABBREVIATED_TYPES_H

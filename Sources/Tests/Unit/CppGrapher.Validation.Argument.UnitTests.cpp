@@ -6,54 +6,55 @@
 
 SCENARIO("Parsing command line arguments")
 {
-    GIVEN( "an app instance" )
+    GIVEN("an app instance")
     {
         auto app = CppGrapher();
 
-        WHEN( "two arguments are supplied" )
+        WHEN("two arguments are supplied")
         {
-            auto args = std::vector<utf8_string> { u8"cpp-grapher_via-test-runner", u8"cpp-grapher-test.should-not-exist" };
+            auto args = std::vector<utf8_string> {u8"cpp-grapher_via-test-runner",
+                                                  u8"cpp-grapher-test.should-not-exist"};
 
-            THEN( "it should not throw an invalid arguments exception" )
+            THEN("it should not throw an invalid arguments exception")
             {
                 try
                 {
-                    app.Main( args );
+                    app.Main(args);
                 }
-                catch ( std::exception& e )
+                catch (std::exception& e)
                 {
-                    REQUIRE_THROWS_AS( throw, FileNotFoundException );
+                    REQUIRE_THROWS_AS(throw, FileNotFoundException);
                 }
             }
         }
 
-        WHEN( "no arguments are supplied" )
+        WHEN("no arguments are supplied")
         {
             auto args = std::vector<utf8_string> {};
 
-            THEN( "it should throw an exception" )
+            THEN("it should throw an exception")
             {
-                REQUIRE_THROWS_AS( app.Main( args ), InvalidArgumentException );
+                REQUIRE_THROWS_AS(app.Main(args), InvalidArgumentException);
             }
         }
 
-        AND_WHEN( "one argument is supplied" )
+        AND_WHEN("one argument is supplied")
         {
-            auto args = std::vector<utf8_string> { u8"cpp-grapher_via-test-runner" };
+            auto args = std::vector<utf8_string> {u8"cpp-grapher_via-test-runner"};
 
-            THEN( "it should throw an exception" )
+            THEN("it should throw an exception")
             {
-                REQUIRE_THROWS_AS( app.Main( args ), InvalidArgumentException );
+                REQUIRE_THROWS_AS(app.Main(args), InvalidArgumentException);
             }
         }
 
-        AND_WHEN( "three arguments are supplied" )
+        AND_WHEN("three arguments are supplied")
         {
-            auto args = std::vector<utf8_string> { u8"cpp-grapher_via-test-runner", u8"sample-arg2", u8"sample-arg3" };
+            auto args = std::vector<utf8_string> {u8"cpp-grapher_via-test-runner", u8"sample-arg2", u8"sample-arg3"};
 
-            THEN( "it should throw an exception" )
+            THEN("it should throw an exception")
             {
-                REQUIRE_THROWS_AS( app.Main( args ), InvalidArgumentException );
+                REQUIRE_THROWS_AS(app.Main(args), InvalidArgumentException);
             }
         }
     }
