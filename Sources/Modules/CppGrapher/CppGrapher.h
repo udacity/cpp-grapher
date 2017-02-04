@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <fstream>
+#include "Magick++.h"
 
 //save compiler switches - external libs often can't handle ultra-strict compiler settings
 #include "tinyutf8.h"
@@ -47,7 +48,8 @@ public:
 	/// @throws                 May throw any std::exception listed by any method in the CppGrapher class (see below).
 	int Main( const std::vector<utf8_string>& args );
 
-private:
+    //Protected allows tests to access 'private' methods via subclassing.
+protected:
     /// Ensure expected/required arguments have been received.
     ///
     /// @param args[in]         A vector of UTF-8 strings representing the arguments given to the program.
@@ -108,6 +110,8 @@ private:
     /// @throws                 Typically, TokenNotFoundException.
     std::tuple<utf8_string::size_type, utf8_string::size_type> FindNextToken( const utf8_string& line,
                                                                               utf8_string::size_type& pos ) const;
+
+    Magick::Image MakeDefaultGraph();
 };
 
 /// @example ../Tests/Unit/Lib.UnitTests.cpp
