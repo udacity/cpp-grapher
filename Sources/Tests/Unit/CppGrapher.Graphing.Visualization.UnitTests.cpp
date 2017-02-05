@@ -1,4 +1,5 @@
 #include <regex>
+#include <RangedGraph/RangedGraph.h>
 #include "catch.hpp"
 #include "CppGrapher.h"
 #include "Helpers/Filesystem.h"
@@ -14,11 +15,6 @@ class TestSpyApp : public CppGrapher
 {
 public:
     using PointDelta = std::tuple<double, double, Color>; //(x, y, color)
-
-    Image MakeBlankGraph(const std::string& pixelSizeDesc = CppGrapher::DEFAULT_GRAPH_SIZE) const
-    {
-        return CppGrapher::MakeBlankGraph(pixelSizeDesc);
-    }
 
     std::vector<KalmanFilterDataPoint> DeserializeDataPoints(const utf8_string& filename) const
     {
@@ -72,7 +68,7 @@ SCENARIO("Graphics tests")
 
             THEN("a the resulting graph should differ from the original by exactly one white pixel set at (0, 0)")
             {
-                auto referenceImage = app.MakeBlankGraph();
+                auto referenceImage = RangedGraph(app.DEFAULT_GRAPH_SIZE).GetImage();
                 auto editedImage = app.GraphDataPoints(app.DeserializeDataPoints(inputFilename));
 
                 auto deltas = app.FindAllPixelDeltas(referenceImage, editedImage);

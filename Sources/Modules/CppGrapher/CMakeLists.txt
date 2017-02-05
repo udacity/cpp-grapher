@@ -5,7 +5,7 @@ set(SOURCE_FILES
         Validation/DataFile.cpp
         Graphing/Visualization.cpp
         ${THIRD_PARTY_SOURCE_FILES}
-        ${HELPERS_SOURCE_FILES})
+        ${HELPERS_SOURCE_FILES} ../RangedGraph/RangedGraph.cpp ../RangedGraph/RangedGraph.h)
 
 add_library(CppGrapher ${SOURCE_FILES})
 
@@ -19,4 +19,4 @@ target_include_directories(CppGrapher PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/variant/
         /usr/local/include/ImageMagick-7/)
 
-target_link_libraries (CppGrapher PUBLIC Magick++-7.Q8HDRI)
+target_link_libraries (CppGrapher PUBLIC RangedGraph Magick++-7.Q8HDRI)

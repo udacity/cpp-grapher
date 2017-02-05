@@ -39,5 +39,10 @@ public:
     FileNotFoundException(utf8_string msg = u8"File not found") : runtime_error(msg.cpp_str()) {}
 };
 
+class InvalidRangeException : public std::runtime_error
+{
+public:
+    InvalidRangeException(utf8_string msg = u8"Invalid range specified") : runtime_error(msg.cpp_str()) {}
+};
 
 #endif // EXCEPTIONS_H
