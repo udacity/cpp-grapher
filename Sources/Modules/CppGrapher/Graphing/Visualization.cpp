@@ -2,9 +2,19 @@
 
 using namespace Magick;
 
-Image CppGrapher::MakeBlankGraph(std::string size = DEFAULT_GRAPH_SIZE)
+Image CppGrapher::MakeBlankGraph(const std::string& sizeDesc = DEFAULT_GRAPH_SIZE) const
 {
-    auto image = Image(size.c_str(), "white");
+    auto image = Image(sizeDesc.c_str(), "white");
     return image;
 }
 
+Magick::Image CppGrapher::GraphDataPoints(
+    const std::vector<KalmanFilterDataPoint, std::allocator<KalmanFilterDataPoint>>& dataPoints) const
+{
+    auto graph = MakeBlankGraph();
+    for(const auto& dataPoint : dataPoints)
+    {
+        graph.pixelColor(dataPoint.x, dataPoint.y, "black");
+    }
+    return graph;
+}

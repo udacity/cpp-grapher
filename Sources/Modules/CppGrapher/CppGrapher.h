@@ -83,7 +83,7 @@ protected:
     /// @returns                A vector of KalmanFilterDataPoints representing the deserialized file.
     /// @throws                 Typically, FileNotFoundException, NoDataFoundException, plus any exceptions thrown by
     ///                         CppGrapher::ParseKalmanFilterPoint() and CppGrapher::FindNextToken().
-    std::vector<KalmanFilterDataPoint> ParseKalmanFilterDataFile(const utf8_string& filename) const;
+    std::vector<KalmanFilterDataPoint> DeserializeDataPoints(const utf8_string& filename) const;
 
     /// Deserialize one line of the data file--expected to be a string, a double and another double delimited by
     /// whitespace.  All three data elements are expected to be on the same line.  Additional data elements on the
@@ -92,7 +92,7 @@ protected:
     /// @param line[in]         A UTF-8 string containing the line of the file to be processed.
     /// @returns                A KalmanFilterDataPoint
     /// @throws                 Typically, any exceptions thrown by CppGrapher::FindNextToken().
-    KalmanFilterDataPoint ParseKalmanFilterDataLine(const utf8_string& line) const;
+    KalmanFilterDataPoint DeserializeDataLine(const utf8_string& line) const;
 
     /// Deserialize the first non-whitespace data element found starting at pos and return it as a string
     ///
@@ -102,7 +102,7 @@ protected:
     ///                         token.
     /// @returns                The found token, returned as a string.
     /// @throws                 Typically, any exceptions thrown by CppGrapher::FindNextToken().
-    utf8_string ParseKalmanFilterName(const utf8_string& line, utf8_string::size_type& pos) const;
+    utf8_string DeserializeDataName(const utf8_string& line, utf8_string::size_type& pos) const;
 
     /// Deserialize the first non-whitespace data element found starting at pos and return it as a
     /// double (IEEE-754 double-precision floating point value).
@@ -113,7 +113,7 @@ protected:
     ///                         token.
     /// @returns                The found token, returned as a double.
     /// @throws                 Typically, BadDataException plus any exceptions thrown by CppGrapher::FindNextToken().
-    double ParseKalmanFilterPoint(const utf8_string& line, utf8_string::size_type& pos) const;
+    double DeserializeDataPoint(const utf8_string& line, utf8_string::size_type& pos) const;
 
     /// Find the bounds of the next contiguous block on non-whitespace data starting at codepoint index pos and return
     /// it as a half-open range in a 2-element tuple (start-index, one-past-end-index).
@@ -125,10 +125,13 @@ protected:
     /// @returns                The codepoint (not byte!) range of the found token, returned as a half-open range--from
     ///                         start-index (inclusive) to end-index (exclusive).
     /// @throws                 Typically, TokenNotFoundException.
-    std::tuple<utf8_string::size_type, utf8_string::size_type> FindNextToken(const utf8_string& line,
-                                                                             utf8_string::size_type& pos) const;
+    std::tuple<utf8_string::size_type, utf8_string::size_type> LocateNextToken(const utf8_string& line,
+                                                                               utf8_string::size_type& pos) const;
 
-    Magick::Image MakeBlankGraph(std::string size);
+    Magick::Image MakeBlankGraph(const std::string& sizeDesc) const;
+
+    Magick::Image GraphDataPoints(
+        const std::vector<KalmanFilterDataPoint, std::allocator<KalmanFilterDataPoint>>& dataPoints) const;
 };
 
 /// @example ../Tests/Unit/Lib.UnitTests.cpp
