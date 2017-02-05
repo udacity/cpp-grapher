@@ -52,10 +52,14 @@ public:
     /// @throws                 May throw any std::exception listed by any method in the CppGrapher class (see below).
     int Main(const std::vector<utf8_string>& args);
 
-    //Protected allows tests to access 'private' methods via subclassing.
-protected:
+private:
+//Conditionally grant test framework access to privates
+#ifdef CPP_GRAPHER_COMPILE_TESTS
+    friend class TestSpyApp;
+#endif
+
     /// Enum mapping argument position to argument meaning, plus argument count sentinel.
-    enum NamedArgs : size_t
+    enum ArgsIndexNames : size_t
     {
         APPLICATION_FILENAME = 0,
         INPUT_FILENAME = 1,
@@ -83,7 +87,7 @@ protected:
     /// @returns                A vector of KalmanFilterDataPoints representing the deserialized file.
     /// @throws                 Typically, FileNotFoundException, NoDataFoundException, plus any exceptions thrown by
     ///                         CppGrapher::ParseKalmanFilterPoint() and CppGrapher::FindNextToken().
-    std::vector<KalmanFilterDataPoint> ParseKalmanFilterDataFile(const utf8_string& filename) const;
+    std::vector<KalmanFilterDataPoint> DeserializeDataPoints(const utf8_string& filename) const;
 
     /// Deserialize one line of the data file--expected to be a string, a double and another double delimited by
     /// whitespace.  All three data elements are expected to be on the same line.  Additional data elements on the
@@ -92,7 +96,7 @@ protected:
     /// @param line[in]         A UTF-8 string containing the line of the file to be processed.
     /// @returns                A KalmanFilterDataPoint
     /// @throws                 Typically, any exceptions thrown by CppGrapher::FindNextToken().
-    KalmanFilterDataPoint ParseKalmanFilterDataLine(const utf8_string& line) const;
+    KalmanFilterDataPoint DeserializeDataLine(const utf8_string& line) const;
 
     /// Deserialize the first non-whitespace data element found starting at pos and return it as a string
     ///
@@ -102,7 +106,7 @@ protected:
     ///                         token.
     /// @returns                The found token, returned as a string.
     /// @throws                 Typically, any exceptions thrown by CppGrapher::FindNextToken().
-    utf8_string ParseKalmanFilterName(const utf8_string& line, utf8_string::size_type& pos) const;
+    utf8_string DeserializeDataName(const utf8_string& line, utf8_string::size_type& pos) const;
 
     /// Deserialize the first non-whitespace data element found starting at pos and return it as a
     /// double (IEEE-754 double-precision floating point value).
@@ -113,7 +117,7 @@ protected:
     ///                         token.
     /// @returns                The found token, returned as a double.
     /// @throws                 Typically, BadDataException plus any exceptions thrown by CppGrapher::FindNextToken().
-    double ParseKalmanFilterPoint(const utf8_string& line, utf8_string::size_type& pos) const;
+    double DeserializeDataPoint(const utf8_string& line, utf8_string::size_type& pos) const;
 
     /// Find the bounds of the next contiguous block on non-whitespace data starting at codepoint index pos and return
     /// it as a half-open range in a 2-element tuple (start-index, one-past-end-index).
@@ -125,10 +129,27 @@ protected:
     /// @returns                The codepoint (not byte!) range of the found token, returned as a half-open range--from
     ///                         start-index (inclusive) to end-index (exclusive).
     /// @throws                 Typically, TokenNotFoundException.
-    std::tuple<utf8_string::size_type, utf8_string::size_type> FindNextToken(const utf8_string& line,
-                                                                             utf8_string::size_type& pos) const;
+    std::tuple<utf8_string::size_type, utf8_string::size_type> LocateNextToken(const utf8_string& line,
+                                                                               utf8_string::size_type& pos) const;
 
-    Magick::Image MakeBlankGraph(std::string size);
+    /// Create an empty ranged graph with indexed axes.  A ranged graph is a Magick::Image with an associated
+    /// position and scale.  (This means all points within the graph's x and y range boundaries will map to a pixel in
+    /// the bitmap.)
+    ///
+    /// @param pixelSizeDesc    A "width x height" (or "widthxheight") string accepted by ImageMagick to determine
+    ///                         the pixel dimensions of the ranged graph bitmap.
+    /// @returns                A ranged bitmap
+    Magick::Image MakeBlankGraph(const std::string& pixelSizeDesc = DEFAULT_GRAPH_SIZE) const;
+
+    /// Iterates through the provided collection of data points and places a colored pixel on the provided ranged graph
+    /// for each data point in the list.  This method automatically uses a unique color for each different
+    /// KalmanFilterDataPoint.name and renders a translucent legend to decode the name/color mappings.
+    ///
+    /// @param dataPoints[in]   Collection of data points to be rendered.
+    /// @param inGraph[in]      Ranged graph (ie. bitmap canvas) serving as the template graph for rendering data
+    ///                         points to.
+    /// @returns                Ranged graph with data points and legend rendered.
+    Magick::Image GraphDataPoints(const std::vector<KalmanFilterDataPoint>& dataPoints) const;
 };
 
 /// @example ../Tests/Unit/Lib.UnitTests.cpp

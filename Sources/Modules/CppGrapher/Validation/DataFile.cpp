@@ -11,7 +11,7 @@
 #include "Helpers/UserDefinedLiterals.h"
 #include "CppGrapher.h"
 
-std::vector<KalmanFilterDataPoint> CppGrapher::ParseKalmanFilterDataFile(const utf8_string& filename) const
+std::vector<KalmanFilterDataPoint> CppGrapher::DeserializeDataPoints(const utf8_string& filename) const
 {
     auto ifs = std::ifstream();
     ifs.exceptions(ifs.exceptions() | std::ios::failbit);
@@ -23,7 +23,7 @@ std::vector<KalmanFilterDataPoint> CppGrapher::ParseKalmanFilterDataFile(const u
         std::string line;
         while (std::getline(ifs, line))
         {
-            points.push_back(ParseKalmanFilterDataLine(utf8_string(line + "\n")));
+            points.push_back(DeserializeDataLine(utf8_string(line + "\n")));
         }
         if (points.size() == 0) { throw NoDataFoundException(); }
 
@@ -35,29 +35,31 @@ std::vector<KalmanFilterDataPoint> CppGrapher::ParseKalmanFilterDataFile(const u
     }
 }
 
-KalmanFilterDataPoint CppGrapher::ParseKalmanFilterDataLine(const utf8_string& line) const
+KalmanFilterDataPoint CppGrapher::DeserializeDataLine(const utf8_string& line) const
 {
     auto dataPoint = KalmanFilterDataPoint();
     auto idx = utf8_string::size_type(0);
-    dataPoint.name = ParseKalmanFilterName(line, idx);
-    dataPoint.x = ParseKalmanFilterPoint(line, idx);
-    dataPoint.y = ParseKalmanFilterPoint(line, idx);
+    dataPoint.name = DeserializeDataName(line, idx);
+    dataPoint.x = DeserializeDataPoint(line, idx);
+    dataPoint.y = DeserializeDataPoint(line, idx);
 
     return dataPoint;
 }
 
-utf8_string CppGrapher::ParseKalmanFilterName(const utf8_string& line, utf8_string::size_type& pos) const
+utf8_string CppGrapher::DeserializeDataName(const utf8_string& line, utf8_string::size_type& pos) const
 {
-    auto tokenRange = FindNextToken(line, pos);
-    return line.substr(line.get(std::get<0>(tokenRange)), line.get(std::get<1>(tokenRange)));
+    enum Range : size_t { BEG = 0, END = 1 };
+
+    auto tokenRange = LocateNextToken(line, pos);
+    return line.substr(line.get(std::get<Range::BEG>(tokenRange)), line.get(std::get<Range::END>(tokenRange)));
 }
 
-double CppGrapher::ParseKalmanFilterPoint(const utf8_string& line, utf8_string::size_type& pos) const
+double CppGrapher::DeserializeDataPoint(const utf8_string& line, utf8_string::size_type& pos) const
 {
-    //If user provides a non-double value, provide a friendlier error message
+    //If user provides a non-double value, provide a friendlier error message than the C++ SL provides
     try
     {
-        return std::stod(ParseKalmanFilterName(line, pos).cpp_str());
+        return std::stod(DeserializeDataName(line, pos).cpp_str());
     }
     catch (std::invalid_argument& e)
     {
@@ -66,7 +68,7 @@ double CppGrapher::ParseKalmanFilterPoint(const utf8_string& line, utf8_string::
     }
 }
 
-std::tuple<utf8_string::size_type, utf8_string::size_type> CppGrapher::FindNextToken(
+std::tuple<utf8_string::size_type, utf8_string::size_type> CppGrapher::LocateNextToken(
     const utf8_string& line,
     utf8_string::size_type& pos) const
 {
