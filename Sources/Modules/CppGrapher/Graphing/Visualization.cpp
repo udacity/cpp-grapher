@@ -1,7 +1,10 @@
 #include "CppGrapher.h"
 
-Magick::Image CppGrapher::MakeDefaultGraph()
+using namespace Magick;
+
+Image CppGrapher::MakeBlankGraph(std::string size = DEFAULT_GRAPH_SIZE)
 {
-    return Magick::Image();
+    auto image = Image(size.c_str(), "white");
+    return image;
 }
 

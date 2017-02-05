@@ -9,7 +9,7 @@ set(SOURCE_FILES
 
 add_library(CppGrapher ${SOURCE_FILES})
 
-target_compile_definitions(CppGrapher PRIVATE MAGICKCORE_QUANTUM_DEPTH=16 MAGICKCORE_HDRI_ENABLE)
+target_compile_definitions(CppGrapher PRIVATE MAGICKCORE_QUANTUM_DEPTH=8 MAGICKCORE_HDRI_ENABLE)
 target_include_directories(CppGrapher PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/
         ${CMAKE_CURRENT_SOURCE_DIR}/../
@@ -19,4 +19,4 @@ target_include_directories(CppGrapher PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/variant/
         /usr/local/include/ImageMagick-7/)
 
-target_link_libraries (CppGrapher PUBLIC Magick++-7.Q16HDRI)
+target_link_libraries (CppGrapher PUBLIC Magick++-7.Q8HDRI)

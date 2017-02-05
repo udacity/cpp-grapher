@@ -13,6 +13,11 @@ inline utf8_string FilenameFromPath (const utf8_string& path)
     return pos != utf8_string::npos ? path.substr(pos + 1, utf8_string::npos) : path;
 }
 
+//This filestream wrapper will:
+// 1) Create `filename` if it does not already exist
+// 2) Either do nothing to `filename` or append `contents` (if data provided) to the file
+// 3) Not interfere with access to the file once the constructor completes
+// 4) Delete the file once the instance falls out of scope (RAII/SBRM)
 class TemporaryFileStream
 {
 public:
@@ -20,8 +25,8 @@ public:
     {
         if (filename_ == "") { throw InvalidArgumentException(Msg::InvalidArg::FILENAME_CANNOT_BE_NULL); };
 
-        auto ofs = std::ofstream(filename_.cpp_str());
-        ofs << contents.cpp_str() << std::flush;
+        auto ofs = std::ofstream(filename_.cpp_str(), std::ofstream::app);
+        ofs << contents.cpp_str();
     }
 
     ~TemporaryFileStream()

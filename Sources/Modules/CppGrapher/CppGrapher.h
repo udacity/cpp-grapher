@@ -20,6 +20,10 @@ struct KalmanFilterDataPoint
 class CppGrapher
 {
 public:
+    /// Default graph size convenience constant (in pixels).  Defined in CppGrapher.cpp.  Will be consumed directly by
+    /// ImageMagick.
+    static const std::string DEFAULT_GRAPH_SIZE;
+
     /// Main() is the application entry (starting) point.
     ///
     /// The traditional C-style practice of using argv + argc is an example of a "buffer + length" anti-pattern.
@@ -50,9 +54,22 @@ public:
 
     //Protected allows tests to access 'private' methods via subclassing.
 protected:
+    /// Enum mapping argument position to argument meaning, plus argument count sentinel.
+    enum NamedArgs : size_t
+    {
+        APPLICATION_FILENAME = 0,
+        INPUT_FILENAME = 1,
+        OUTPUT_FILENAME = 2,
+        REQUIRED_ARGUMENT_COUNT = 3
+    };
+
     /// Ensure expected/required arguments have been received.
     ///
     /// @param args[in]         A vector of UTF-8 strings representing the arguments given to the program.
+    /// @returns                A 3-element tuple containing UTF-8 strings representing:
+    ///                             1) this application's filename,
+    ///                             2) the requested input filename expected to Kalman Filter data points and
+    ///                             3) the output file representing a graph of those points, respectively.
     /// @throws                 Typically, InvalidArgumentException.
     void ValidateArgs(const std::vector<utf8_string>& args) const;
 
@@ -111,7 +128,7 @@ protected:
     std::tuple<utf8_string::size_type, utf8_string::size_type> FindNextToken(const utf8_string& line,
                                                                              utf8_string::size_type& pos) const;
 
-    Magick::Image MakeDefaultGraph();
+    Magick::Image MakeBlankGraph(std::string size);
 };
 
 /// @example ../Tests/Unit/Lib.UnitTests.cpp

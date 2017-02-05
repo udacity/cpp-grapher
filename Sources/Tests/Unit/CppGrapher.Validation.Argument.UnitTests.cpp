@@ -10,12 +10,13 @@ SCENARIO("Parsing command line arguments")
     {
         auto app = CppGrapher();
 
-        WHEN("two arguments are supplied")
+        WHEN("one (system) + two (user) arguments are supplied")
         {
-            auto args = std::vector<utf8_string> {u8"cpp-grapher_via-test-runner",
-                                                  u8"cpp-grapher-test.should-not-exist"};
+            auto args = std::vector<utf8_string> {u8"cpp-grapher-test",
+                                                  u8"cpp-grapher-test_input",
+                                                  u8"cpp-grapher-test_output"};
 
-            THEN("it should not throw an invalid arguments exception")
+            THEN("it should not throw an invalid argument exception")
             {
                 try
                 {
@@ -38,9 +39,9 @@ SCENARIO("Parsing command line arguments")
             }
         }
 
-        AND_WHEN("one argument is supplied")
+        WHEN("only one (system) argument is supplied")
         {
-            auto args = std::vector<utf8_string> {u8"cpp-grapher_via-test-runner"};
+            auto args = std::vector<utf8_string> {u8"cpp-grapher-test"};
 
             THEN("it should throw an exception")
             {
@@ -48,9 +49,23 @@ SCENARIO("Parsing command line arguments")
             }
         }
 
-        AND_WHEN("three arguments are supplied")
+        WHEN("only one (system) + one (user) arguments are supplied")
         {
-            auto args = std::vector<utf8_string> {u8"cpp-grapher_via-test-runner", u8"sample-arg2", u8"sample-arg3"};
+            auto args = std::vector<utf8_string> {u8"cpp-grapher-test",
+                                                  u8"cpp-grapher-test_input"};
+
+            THEN("it should throw an exception")
+            {
+                REQUIRE_THROWS_AS(app.Main(args), InvalidArgumentException);
+            }
+        }
+
+        AND_WHEN("one (system) + three (user) arguments are supplied")
+        {
+            auto args = std::vector<utf8_string> {u8"cpp-grapher-test",
+                                                  u8"cpp-grapher-test_input",
+                                                  u8"cpp-grapher-test_output",
+                                                  u8"cpp-grapher-test_one-too-many-args"};
 
             THEN("it should throw an exception")
             {
