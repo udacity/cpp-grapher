@@ -5,18 +5,18 @@
 
 #include "CppGrapher.h"
 
-constexpr auto filenameArgIdx = 1;
-
-void CppGrapher::ValidateArgs( const std::vector<utf8_string>& args ) const
+void CppGrapher::ValidateArgs(const std::vector<utf8_string>& args) const
 {
-	//Ensure exactly one argument was provided (note: app name is always automatically provided by system)
+    //Ensure exactly one argument was provided (note: app name is always automatically provided by system)
     //args[0] is guarded because Main can be called with 0 args (eg. by driver or test)
-	if( args.size() != 2 )
+    if (args.size() != NamedArgs::REQUIRED_ARGUMENT_COUNT)
     {
-        throw InvalidArgumentException(( args.size() > 0 ? FilenameFromPath( args[ 0 ] ) + " " : "" ) +
+        throw InvalidArgumentException((args.size() > 0
+                                            ? FilenameFromPath(args[NamedArgs::APPLICATION_FILENAME]) + " "
+                                            : "") +
                                        Msg::ERROR_PREAMBLE +
-                                       ( args.size() < 2
-                                         ? Msg::InvalidArg::EXPECTED_ONE_FOUND_NONE
-                                         : Msg::InvalidArg::EXPECTED_ONE_FOUND_MULTIPLE ));
+                                       (args.size() < NamedArgs::REQUIRED_ARGUMENT_COUNT
+                                            ? Msg::InvalidArg::EXPECTED_TWO_FOUND_NONE
+                                            : Msg::InvalidArg::EXPECTED_TWO_FOUND_MORE));
     }
 }

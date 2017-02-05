@@ -4,11 +4,11 @@
 
 #include "CppGrapher.h"
 
-constexpr auto filenameArgIdx = 1;
+const std::string CppGrapher::DEFAULT_GRAPH_SIZE = "1280x720";
 
-int CppGrapher::Main( const std::vector<utf8_string>& args )
+int CppGrapher::Main(const std::vector<utf8_string>& args)
 {
-	ValidateArgs(args);
-    auto userData = ParseKalmanFilterDataFile(args[filenameArgIdx]);
+    ValidateArgs(args);
+	auto userData = ParseKalmanFilterDataFile(args[NamedArgs::INPUT_FILENAME].cpp_str());
 	return EXIT_SUCCESS;
 }

@@ -1,12 +1,22 @@
+set(SOURCE_FILES
+        CppGrapher.cpp
+        CppGrapher.h
+        Validation/Argument.cpp
+        Validation/DataFile.cpp
+        Graphing/Visualization.cpp
+        ${THIRD_PARTY_SOURCE_FILES}
+        ${HELPERS_SOURCE_FILES})
 
-set(SOURCE_FILES CppGrapher.cpp CppGrapher.h Validation/Argument.cpp Validation/DataFile.cpp ../3rdParty/tinyutf8/tinyutf8.cpp ../3rdParty/tinyutf8/tinyutf8.h ../Helpers/Unicode.h)
 add_library(CppGrapher ${SOURCE_FILES})
 
-target_include_directories(CppGrapher
-        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}
-        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../
-        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/any/
-        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/Optional/
-        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/variant/
-        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/utf-8/
-        PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/tinyutf8/)
+target_compile_definitions(CppGrapher PRIVATE MAGICKCORE_QUANTUM_DEPTH=8 MAGICKCORE_HDRI_ENABLE)
+target_include_directories(CppGrapher PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/any/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/Optional/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/tinyutf8/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/variant/
+        /usr/local/include/ImageMagick-7/)
+
+target_link_libraries (CppGrapher PUBLIC Magick++-7.Q8HDRI)

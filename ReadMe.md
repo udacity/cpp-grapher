@@ -30,9 +30,13 @@ Sources/Modules/cpp-grapher/cpp-grapher
 ### IDE Support
 If you are more comfortable with GUI-based development, I recommend taking a look at [JetBrains' CLion](https://www.jetbrains.com/clion/).  It works with C++11/14 with "Intellisense" and refactoring tools, CMake dependency management and has cross-platform (Mac/Linux/Windows) support. 
 
-### License terms for Repository Dependencies
+### License terms for Repository Submodule Dependencies
 - [any](https://github.com/thelink2012/any/blob/master/LICENSE_1_0.txt)
 - [Catch](https://github.com/philsquared/Catch/blob/master/LICENSE_1_0.txt)
 - [Optional](https://github.com/akrzemi1/Optional/blob/master/LICENSE_1_0.txt)
 - [tinyutf8](https://github.com/bradleygibson/tinyutf8/blob/master/LICENCE)
 - [variant](https://github.com/tcbrindle/variant/blob/master/variant)
+
+### License terms for Binary Dependencies
+- [ImageMagick (for Magick++)](https://github.com/ImageMagick/ImageMagick/blob/master/LICENSE)
+	- Binary installation instructions (OS X): `brew install imagemagick --with-quantum-depth-8`
