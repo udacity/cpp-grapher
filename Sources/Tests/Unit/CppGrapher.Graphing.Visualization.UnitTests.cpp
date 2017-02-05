@@ -6,9 +6,15 @@
 
 using namespace Magick;
 
-class TestApp : public CppGrapher
+// TestSpyApp is conditionally defined as a friend class of CppGrapher to permit access to CppGrapher's privates.
+// CPP_GRAPHER_COMPILE_TESTS preprocessor flag must be defined for the `Tests` target.
+// One way to accomplish this (in Tests/CMakeLists.txt):
+//      target_compile_definitions(Tests PRIVATE CPP_GRAPHER_COMPILE_TESTS)
+class TestSpyApp : public CppGrapher
 {
 public:
+    using PointDelta = std::tuple<double, double, Color>; //(x, y, color)
+
     Image MakeBlankGraph(const std::string& sizeDesc = CppGrapher::DEFAULT_GRAPH_SIZE) const
     {
         return CppGrapher::MakeBlankGraph(sizeDesc);
@@ -23,15 +29,37 @@ public:
     {
         return CppGrapher::GraphDataPoints(dataPoints);
     }
+
+    std::vector<PointDelta> FindAllPixelDeltas(Image diffImage, Image compareImage)
+    {
+        diffImage.composite(compareImage, 0, 0, DifferenceCompositeOp);
+        auto deltas = std::vector<PointDelta>();
+        for (auto y = 0_usz; y < diffImage.rows(); ++y)
+        {
+            for (auto x = 0_usz; x < diffImage.columns(); ++x)
+            {
+                auto color = diffImage.pixelColor(x, y);
+                if (color != Color(0, 0, 0))
+                {
+                    deltas.push_back(std::make_tuple(x, y, color));
+                }
+            }
+        }
+
+        //DEBUG TODO: Remove
+        diffImage.write("cpp-grapher_diff.png");
+
+        return deltas;
+    }
 };
 
 SCENARIO("Graphics tests")
 {
     GIVEN("a graphics-enabled app instance")
     {
-        auto app = TestApp();
+        auto app = TestSpyApp();
 
-        WHEN("fed a data file rendering a single pixel at the origin (0, 0)")
+        WHEN("fed a data file rendering a single black pixel at the origin (0, 0)")
         {
             auto inputFilename = utf8_string(u8"cpp-grapher_test_input.one_pixel");
             auto outputFilename = utf8_string(u8"cpp-grapher_test_output.png");
@@ -42,32 +70,18 @@ SCENARIO("Graphics tests")
                                                   inputFilename.cpp_str(),
                                                   outputFilename.cpp_str()};
 
-            THEN("a bitmap should be rendered with exactly one pixel set at (0, 0)")
+            THEN("a the resulting graph should differ from the original by exactly one white pixel set at (0, 0)")
             {
                 auto referenceImage = app.MakeBlankGraph();
                 auto editedImage = app.GraphDataPoints(app.DeserializeDataPoints(inputFilename));
-                auto diffImage = Image(referenceImage);
-                diffImage.composite(editedImage, 0, 0, DifferenceCompositeOp);
 
-                auto deltas = std::vector<std::tuple<size_t, size_t>>();
-                for(auto y = 0_usz; y < diffImage.rows(); ++y)
-                {
-                    for(auto x= 0_usz; x < diffImage.columns(); ++x)
-                    {
-                        if(diffImage.pixelColor(x, y) != Color(0,0,0))
-                        {
-                            deltas.push_back(std::make_tuple(x, y));
-                        }
-                    }
-                }
-
+                auto deltas = app.FindAllPixelDeltas(referenceImage, editedImage);
                 REQUIRE(deltas.size() == 1);
-                REQUIRE(deltas[0] == std::make_tuple(0_usz, 0_usz));
+                REQUIRE(deltas[0] == std::make_tuple(0, 0, Color(0xff, 0xff, 0xff)));
 
-                //DEBUG
+                //DEBUG TODO: Remove
                 referenceImage.write("cpp-grapher_reference.png");
                 editedImage.write("cpp-grapher_edited.png");
-                diffImage.write("cpp-grapher_diff.png");
             }
         }
     }

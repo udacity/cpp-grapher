@@ -2,7 +2,7 @@
 
 using namespace Magick;
 
-Image CppGrapher::MakeBlankGraph(const std::string& sizeDesc = DEFAULT_GRAPH_SIZE) const
+Image CppGrapher::MakeBlankGraph(const std::string& sizeDesc) const
 {
     auto image = Image(sizeDesc.c_str(), "white");
     return image;
