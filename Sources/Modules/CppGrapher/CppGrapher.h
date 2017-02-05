@@ -132,10 +132,24 @@ private:
     std::tuple<utf8_string::size_type, utf8_string::size_type> LocateNextToken(const utf8_string& line,
                                                                                utf8_string::size_type& pos) const;
 
-    Magick::Image MakeBlankGraph(const std::string& sizeDesc = DEFAULT_GRAPH_SIZE) const;
+    /// Create an empty ranged graph with indexed axes.  A ranged graph is a Magick::Image with an associated
+    /// position and scale.  (This means all points within the graph's x and y range boundaries will map to a pixel in
+    /// the bitmap.)
+    ///
+    /// @param pixelSizeDesc    A "width x height" (or "widthxheight") string accepted by ImageMagick to determine
+    ///                         the pixel dimensions of the ranged graph bitmap.
+    /// @returns                A ranged bitmap
+    Magick::Image MakeBlankGraph(const std::string& pixelSizeDesc = DEFAULT_GRAPH_SIZE) const;
 
-    Magick::Image GraphDataPoints(
-        const std::vector<KalmanFilterDataPoint, std::allocator<KalmanFilterDataPoint>>& dataPoints) const;
+    /// Iterates through the provided collection of data points and places a colored pixel on the provided ranged graph
+    /// for each data point in the list.  This method automatically uses a unique color for each different
+    /// KalmanFilterDataPoint.name and renders a translucent legend to decode the name/color mappings.
+    ///
+    /// @param dataPoints[in]   Collection of data points to be rendered.
+    /// @param inGraph[in]      Ranged graph (ie. bitmap canvas) serving as the template graph for rendering data
+    ///                         points to.
+    /// @returns                Ranged graph with data points and legend rendered.
+    Magick::Image GraphDataPoints(const std::vector<KalmanFilterDataPoint>& dataPoints) const;
 };
 
 /// @example ../Tests/Unit/Lib.UnitTests.cpp

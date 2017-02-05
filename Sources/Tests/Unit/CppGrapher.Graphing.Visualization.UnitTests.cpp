@@ -15,9 +15,9 @@ class TestSpyApp : public CppGrapher
 public:
     using PointDelta = std::tuple<double, double, Color>; //(x, y, color)
 
-    Image MakeBlankGraph(const std::string& sizeDesc = CppGrapher::DEFAULT_GRAPH_SIZE) const
+    Image MakeBlankGraph(const std::string& pixelSizeDesc = CppGrapher::DEFAULT_GRAPH_SIZE) const
     {
-        return CppGrapher::MakeBlankGraph(sizeDesc);
+        return CppGrapher::MakeBlankGraph(pixelSizeDesc);
     }
 
     std::vector<KalmanFilterDataPoint> DeserializeDataPoints(const utf8_string& filename) const
