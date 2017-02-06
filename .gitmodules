@@ -12,4 +12,4 @@
 	url = git@github.com:tcbrindle/variant.git
 [submodule "Sources/Modules/3rdParty/tinyutf8"]
 	path = Sources/Modules/3rdParty/tinyutf8
-	url = github:bradleygibson/tinyutf8.git
+	url = git@github.com:bradleygibson/tinyutf8.git
