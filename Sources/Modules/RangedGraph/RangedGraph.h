@@ -9,6 +9,9 @@
 using Range = std::tuple<double, double>;
 enum RangeIdxNames: size_t { BEG = 0, END = 1 };
 
+template<typename T>
+bool AreApproxEqual(T f1, T f2);
+
 class RangedGraph
 {
 public:
@@ -22,7 +25,7 @@ public:
 private:
 //Conditionally grant test framework access to privates
 #ifdef CPP_GRAPHER_COMPILE_TESTS
-    friend class TestSpyApp;
+    friend class TestHelpers;
 #endif
 
     Range xRange;
@@ -32,9 +35,6 @@ private:
     RangedGraph ValidateRange(Range tuple);
 
     Range CenterRange(const std::tuple<double, double>& range, const double span) const;
-
-    template<typename T>
-    static bool AreApproxEqual(T f1, T f2);
 
     Magick::Image MakeBlankGraph(const std::string& pixelSizeDesc) const;
 };

@@ -7,11 +7,11 @@
 
 using namespace Magick;
 
-// TestSpyApp is conditionally defined as a friend class of CppGrapher to permit access to CppGrapher's privates.
+// TestHelpers is conditionally defined as a friend class of CppGrapher to permit access to CppGrapher's privates.
 // CPP_GRAPHER_COMPILE_TESTS preprocessor flag must be defined for the `Tests` target.
 // One way to accomplish this (in Tests/CMakeLists.txt):
 //      target_compile_definitions(Tests PRIVATE CPP_GRAPHER_COMPILE_TESTS)
-class TestSpyApp : public CppGrapher
+class TestHelpers : public CppGrapher
 {
 public:
     using PointDelta = std::tuple<double, double, Color>; //(x, y, color)
@@ -53,7 +53,7 @@ SCENARIO("Graphics tests")
 {
     GIVEN("a graphics-enabled app instance")
     {
-        auto app = TestSpyApp();
+        auto app = TestHelpers();
 
         WHEN("fed a data file rendering a single black pixel at the origin (0, 0)")
         {

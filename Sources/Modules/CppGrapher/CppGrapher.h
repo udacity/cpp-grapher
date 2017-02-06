@@ -55,7 +55,7 @@ public:
 private:
 //Conditionally grant test framework access to privates
 #ifdef CPP_GRAPHER_COMPILE_TESTS
-    friend class TestSpyApp;
+    friend class TestHelpers;
 #endif
 
     /// Enum mapping argument position to argument meaning, plus argument count sentinel.

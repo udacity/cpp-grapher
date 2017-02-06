@@ -41,12 +41,6 @@ RangedGraph RangedGraph::SetPoint(const double pointX, const double pointY, cons
     return *this;
 }
 
-template<typename T>
-bool RangedGraph::AreApproxEqual(T f1, T f2)
-{
-    return (std::fabs(f1 - f2) <= std::numeric_limits<T>::epsilon() * std::fmax(fabs(f1), fabs(f2)));
-}
-
 Image RangedGraph::MakeBlankGraph(const std::string& pixelSizeDesc) const
 {
     auto image = Image(pixelSizeDesc.c_str(), "white");
@@ -58,3 +52,8 @@ Image RangedGraph::GetImage() const
     return graph;
 }
 
+template<typename T>
+bool AreApproxEqual(T f1, T f2)
+{
+    return (std::fabs(f1 - f2) <= std::numeric_limits<T>::epsilon() * std::fmax(fabs(f1), fabs(f2)));
+}

@@ -1,6 +1,7 @@
 #include <iostream>
 #include <Helpers/Filesystem.h>
 #include <vector>
+#include <cmath>
 
 #include "CppGrapher.h"
 
