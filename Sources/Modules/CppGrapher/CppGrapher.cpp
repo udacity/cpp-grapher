@@ -15,7 +15,6 @@ Magick::Image CppGrapher::GraphDataPoints(const std::vector<KalmanFilterDataPoin
     auto graph = RangedGraph(RangedGraph::DEFAULT_GRAPH_CANVAS_SIZE, MakeRange2D(-1, 1));
     for(const auto& dataPoint : dataPoints)
     {
-        std::cout << "(" << dataPoint.x << ", " << dataPoint.y << ")" << std::endl;
         graph.SetPoint(PointCoord(dataPoint.x, dataPoint.y), "black");
     }
     return graph.GetImage();

@@ -49,8 +49,8 @@ namespace ranged_graph
 
     Span2D RangedGraph::CalculateGraphSpan(const Range2D& range2D) const
     {
-        return Span2D(range2D.first.second - range2D.first.first,
-                         range2D.second.second - range2D.second.first);
+        return Span2D(static_cast<f64>(static_cast<f80>(range2D.first.second) - range2D.first.first),
+                      static_cast<f64>(static_cast<f80>(range2D.second.second) - range2D.second.first));
     }
 
     Image RangedGraph::MakeGraphCanvas(const std::string& pixelSizeDesc) const
@@ -72,8 +72,8 @@ namespace ranged_graph
     double RangedGraph::CalculatePointsPerPixel(const Span2D& span2D, const Image& image) const
     {
         ValidateGraph(image);
-        return std::max(span2D.first / image.columns(),
-                        span2D.second / image.rows());
+        return static_cast<f64>(std::max(static_cast<f80>(span2D.first) / image.columns(),
+                                         static_cast<f80>(span2D.second) / image.rows()));
     }
 
     Range2D RangedGraph::MakeCenteredGraphRange(const Range2D& range2D,
@@ -86,30 +86,16 @@ namespace ranged_graph
 
         return xSpanHalfDelta < 0 || ySpanHalfDelta < 0
                ? range2D
-               : MakeRange2D(range2D.first.first - xSpanHalfDelta,
-                             range2D.first.second + xSpanHalfDelta,
-                             range2D.second.first - ySpanHalfDelta,
-                             range2D.second.second + ySpanHalfDelta);
+               : MakeRange2D(static_cast<f64>(range2D.first.first - xSpanHalfDelta),
+                             static_cast<f64>(range2D.first.second + xSpanHalfDelta),
+                             static_cast<f64>(range2D.second.first - ySpanHalfDelta),
+                             static_cast<f64>(range2D.second.second + ySpanHalfDelta));
     }
 
     RangedGraph RangedGraph::SetPoint(const PointCoord& point, const Color& color)
     {
         ValidatePointInGraph(point);
-        //TODO: Remove
-        std::cout << "*** Image(x(0, " << image_.columns() - 1 << "), y(0, " << image_.rows() - 1 << ")), Range2D(Range("
-                  << range2D_.first.first << ", " << range2D_.first.second << "), ("
-                  << range2D_.second.first << ", " << range2D_.second.second << ")) @ " << pointsPerPixel_ << "_=> PixelRange(("
-                  << image_.columns() / 2 - pointsPerPixel_ * (std::fabs(range2D_.first.second - range2D_.first.first) / 2)
-                  << ", "
-                  << image_.columns() / 2 + pointsPerPixel_ * (std::fabs(range2D_.first.second - range2D_.first.first) / 2)
-                  << "), "
-                  << image_.rows() / 2 - pointsPerPixel_ * (std::fabs(range2D_.second.second - range2D_.second.first) / 2)
-                  << ", "
-                  << image_.rows() / 2 + pointsPerPixel_ * (std::fabs(range2D_.second.second - range2D_.second.first) / 2)
-                  << ")) ***" << std::endl;
         auto pixelCoord = ConvertPointToPixelCoord(point);
-        //TODO: Remove
-        std::cout << "*** PixelCoord(" << pixelCoord.first << "," << pixelCoord.second << ") ***" << std::endl;
         image_.pixelColor(pixelCoord.first, pixelCoord.second, color);
 
         return *this;
@@ -138,8 +124,10 @@ namespace ranged_graph
 
     PixelCoord RangedGraph::ConvertPointToPixelCoord(const PointCoord& pointCoord) const
     {
-        return PixelCoord(static_cast<size_t>(std::fabs(pointCoord.first - range2D_.first.first) / pointsPerPixel_),
-                     static_cast<size_t>(std::fabs(pointCoord.second - range2D_.second.first) / pointsPerPixel_));
+        return PixelCoord(
+            static_cast<size_t>(std::fabs(static_cast<f80>(pointCoord.first) - range2D_.first.first) / pointsPerPixel_),
+            static_cast<size_t>(std::fabs(static_cast<f80>(pointCoord.second) - range2D_.second.first) /
+                                pointsPerPixel_));
     }
 
     Image RangedGraph::GetImage() const

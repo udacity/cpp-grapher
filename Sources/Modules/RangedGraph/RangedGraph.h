@@ -68,7 +68,7 @@ namespace ranged_graph
         friend class ::TestHelper;
 #endif
 
-        double pointsPerPixel_;
+        long double pointsPerPixel_;
         Range2D range2D_;
         Magick::Image image_;
 

@@ -62,15 +62,6 @@ SCENARIO("Continuous-to-Discrete mapping (CDM) functionality")
                 REQUIRE_THROWS_AS(app.Main(args), PointOutOfRangeException);
             }
         }
-
-        AND_WHEN("only a single datapoint is provided with no graph scale")
-        {
-
-            THEN("the graph should autoscale and center the provided point with a surround of 1 pixel")
-            {
-
-            }
-        }
     }
 
     GIVEN("a RangedGraph instance set to render a 3x3 (9-pixel) canvas ranging from -1 to 1 on both x and y axes")
