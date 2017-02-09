@@ -17,5 +17,6 @@ target_include_directories(Tests PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/3rdParty/Catch/include/
         /usr/local/include/ImageMagick-7/)
 
-target_compile_definitions(Tests PRIVATE CPP_GRAPHER_COMPILE_TESTS MAGICKCORE_QUANTUM_DEPTH=8 MAGICKCORE_HDRI_ENABLE)
-target_link_libraries (Tests PUBLIC Runner CppGrapher)
+target_compile_definitions(Tests PRIVATE RANGED_GRAPH_ACCESS_PRIVATES MAGICKCORE_QUANTUM_DEPTH=8
+        MAGICKCORE_HDRI_ENABLE)
+target_link_libraries (Tests PUBLIC Runner CppGrapher RangedGraph)

@@ -2,7 +2,6 @@
 #define USER_DEFINED_LITERALS_H
 
 #include <cstdint>
-
 #include "AbbreviatedTypes.h"
 
 //Support for forcing user-defined literals to be evaluated at compile-time

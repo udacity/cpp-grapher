@@ -13,7 +13,7 @@ SCENARIO("Validating the data file")
         WHEN("a file with valid data is provided")
         {
             auto inputFilename = utf8_string(u8"cpp-grapher-test_input.valid-data");
-            auto fileContents = utf8_string(u8"test_name 1.0 2.0");
+            auto fileContents = utf8_string(u8"test_name -0.1 0.5");
             auto outputFilename = utf8_string(u8"cpp-grapher-test_output");
 
             auto ifs = TemporaryFileStream(inputFilename, fileContents);
@@ -62,7 +62,7 @@ SCENARIO("Validating the data file")
         AND_WHEN("a valid multi-line file with valid data is provided")
         {
             auto inputFilename = utf8_string(u8"cpp-grapher-test_input.valid-data");
-            auto fileContents = utf8_string(u8"test_line_1 1.0 2.0\ntest_line_2 3.0 4\ntest_line_3 5.1 6.2");
+            auto fileContents = utf8_string(u8"test_line_1 -0.1 0.5\ntest_line_2 -0.2 0.4\ntest_line_3 -0.7 1.0");
             auto ifs = TemporaryFileStream(inputFilename, fileContents);
 
             auto args = std::vector<utf8_string> {u8"cpp-grapher-test",
@@ -78,7 +78,7 @@ SCENARIO("Validating the data file")
         AND_WHEN("a valid file with 'esoteric' whitespace is provided")
         {
             auto inputFilename = utf8_string(u8"cpp-grapher-test_input.valid-data");
-            auto fileContents = utf8_string(u8"test_line_1\t1.0\r2.0\ntest_line_2\v3.0\u205f4\ntest_line_3 5.1 6.2");
+            auto fileContents = utf8_string(u8"test_line_1 -0.1 0.5\ntest_line_2 -0.2 0.4\ntest_line_3 -0.7 1");
             auto ifs = TemporaryFileStream(inputFilename, fileContents);
 
             auto args = std::vector<utf8_string> {u8"cpp-grapher-test",
@@ -94,7 +94,7 @@ SCENARIO("Validating the data file")
         AND_WHEN("an invalid file with bad delimiters is provided")
         {
             auto inputFilename = utf8_string(u8"cpp-grapher-test_input.valid-data");
-            auto fileContents = utf8_string(u8"test_name,1.0;2.0");
+            auto fileContents = utf8_string(u8"test_name,-0.1;0.5");
             auto ifs = TemporaryFileStream(inputFilename, fileContents);
 
             auto args = std::vector<utf8_string> {u8"cpp-grapher-test",
