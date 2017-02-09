@@ -2,8 +2,7 @@ set(SOURCE_FILES
         CppGrapher.cpp
         CppGrapher.h
         Validation/Argument.cpp
-        Validation/DataFile.cpp
-        Graphing/Visualization.cpp
+        Deserialization/KalmanFilterDataFile.cpp
         ${THIRD_PARTY_SOURCE_FILES}
         ${HELPERS_SOURCE_FILES} ../RangedGraph/RangedGraph.cpp ../RangedGraph/RangedGraph.h)
 

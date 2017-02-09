@@ -12,6 +12,7 @@ target_include_directories(RangedGraph PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/../
         ${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/any/
         ${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/Optional/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/range-v3/include/range/v3/
         ${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/tinyutf8/
         ${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/variant/
         /usr/local/include/ImageMagick-7/)

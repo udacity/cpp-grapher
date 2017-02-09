@@ -20,10 +20,6 @@ struct KalmanFilterDataPoint
 class CppGrapher
 {
 public:
-    /// Default graph size convenience constant (in pixels).  Defined in CppGrapher.cpp.  Will be consumed directly by
-    /// ImageMagick.
-    static const std::string DEFAULT_GRAPH_SIZE;
-
     /// Main() is the application entry (starting) point.
     ///
     /// The traditional C-style practice of using argv + argc is an example of a "buffer + length" anti-pattern.
@@ -55,7 +51,7 @@ public:
 private:
 //Conditionally grant test framework access to privates
 #ifdef CPP_GRAPHER_COMPILE_TESTS
-    friend class TestHelpers;
+    friend class TestHelper;
 #endif
 
     /// Enum mapping argument position to argument meaning, plus argument count sentinel.
@@ -139,7 +135,7 @@ private:
     /// @param pixelSizeDesc    A "width x height" (or "widthxheight") string accepted by ImageMagick to determine
     ///                         the pixel dimensions of the ranged graph bitmap.
     /// @returns                A ranged bitmap
-    //Magick::Image MakeBlankGraph(const std::string& pixelSizeDesc = DEFAULT_GRAPH_SIZE) const;
+    //Magick::Image MakeGraphCanvas(const std::string& pixelSizeDesc = DEFAULT_GRAPH_CANVAS_SIZE) const;
 
     /// Iterates through the provided collection of data points and places a colored pixel on the provided ranged graph
     /// for each data point in the list.  This method automatically uses a unique color for each different

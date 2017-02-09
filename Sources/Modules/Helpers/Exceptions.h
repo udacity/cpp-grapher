@@ -45,4 +45,17 @@ public:
     InvalidRangeException(utf8_string msg = u8"Invalid range specified") : runtime_error(msg.cpp_str()) {}
 };
 
+class InvalidGraphSizeException : public std::runtime_error
+{
+public:
+    InvalidGraphSizeException(utf8_string msg = u8"Invalid graph size requested") : runtime_error(msg.cpp_str()) {}
+};
+
+class PointOutOfRangeException : public std::runtime_error
+{
+public:
+    PointOutOfRangeException(utf8_string msg = u8"Point requested outside the range of the graph") :
+                                                                                    runtime_error(msg.cpp_str()) {}
+};
+
 #endif // EXCEPTIONS_H
