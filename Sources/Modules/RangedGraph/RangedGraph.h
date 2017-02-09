@@ -9,6 +9,8 @@
 #include <Helpers/Resources.h>
 #include "Helpers/UserDefinedLiterals.h"
 
+static_assert(sizeof(long double) > sizeof(double), "RangedGraph requires support for extended-precision floating point to operate correctly.  Extended-precision is not supported by your compiler and/or hardware platform.");
+
 //Forward declaration required to conditionally grant test framework access to privates
 #ifdef RANGED_GRAPH_ACCESS_PRIVATES
 class TestHelper;

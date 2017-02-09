@@ -1,7 +1,3 @@
-//
-// Created by bRad on 2/1/17.
-//
-
 #ifndef RESOURCES_H
 #define RESOURCES_H
 
@@ -16,6 +12,7 @@ public:
     static constexpr auto EXPECTED_RANGE_SEPARATOR = u8", ";
     static constexpr auto RECEIVED_OUT_OF_RANGE_VALUE = u8").  The received value was ";
     static constexpr auto EXPECTED_RANGE_TERMINATOR = u8".";
+
     class InvalidArg
     {
     public:
@@ -24,8 +21,8 @@ public:
         static constexpr auto FILENAME_CANNOT_BE_NULL = u8"Filename parameter cannot be null.";
         static constexpr auto FILENAME_ALREADY_EXISTS = u8"Filename already exists.";
         static constexpr auto INVALID_RANGE_MIN_GREATER_THAN_MAX =
-                u8"Invalid range specified.  The range minimum value must not be greater than range maximum value";
-        static constexpr auto INVALID_RANGE_NO_SPAN   =
+            u8"Invalid range specified.  The range minimum value must not be greater than range maximum value";
+        static constexpr auto INVALID_RANGE_NO_SPAN =
             u8"Invalid range specified.  There must be a difference between the range's begin and end values.";
         static constexpr auto GRAPH_MUST_BE_AT_LEAST_1_X_1 =
             u8"Invalid graph size specified.  The requested graph size must be 1x1 pixels or larger";
@@ -34,6 +31,7 @@ public:
     private:
         InvalidArg();
     };
+
 private:
     Msg();
 };
