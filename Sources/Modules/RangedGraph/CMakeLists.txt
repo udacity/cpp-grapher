@@ -10,11 +10,7 @@ target_compile_definitions(RangedGraph PRIVATE MAGICKCORE_QUANTUM_DEPTH=8 MAGICK
 target_include_directories(RangedGraph PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/
         ${CMAKE_CURRENT_SOURCE_DIR}/../
-        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/any/
-        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/Optional/
-        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/range-v3/include/range/v3/
-        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/tinyutf8/
-        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/variant/
+        ${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/
         /usr/local/include/ImageMagick-7/)
 
 target_link_libraries (RangedGraph PUBLIC Magick++-7.Q8HDRI)

@@ -1,7 +1,7 @@
 #ifndef EXCEPTIONS_H
 #define EXCEPTIONS_H
 
-#include "tinyutf8.h"
+#include "3rdParty/tinyutf7.h"
 
 class NotImplementedException : public std::runtime_error
 {

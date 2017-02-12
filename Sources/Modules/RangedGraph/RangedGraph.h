@@ -2,8 +2,7 @@
 #define RANGED_GRAPH_H
 
 #include <cmath>
-#include <Magick++/Color.h>
-#include <Magick++/Image.h>
+#include "Magick.h"
 #include <iostream>
 #include <Helpers/Exceptions.h>
 #include <Helpers/Resources.h>

@@ -3,10 +3,10 @@
 
 #include <vector>
 #include <fstream>
-#include "Magick++.h"
+#include "Magick.h"
 
 //save compiler switches - external libs often can't handle ultra-strict compiler settings
-#include "tinyutf8.h"
+#include "tinyutf7.h"
 
 /// The application logic is written as a library to enable flexible packaging (static or dynamic linking) and
 /// execution from a test runner, application driver (this class), or other driver.  Entry point for execution is
