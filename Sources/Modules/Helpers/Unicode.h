@@ -1,7 +1,7 @@
 #ifndef UNICODE_H
 #define UNICODE_H
 
-#include "tinyutf7.h"
+#include "tinyutf8/tinyutf8.h"
 
 class UnicodeLiterals
 {

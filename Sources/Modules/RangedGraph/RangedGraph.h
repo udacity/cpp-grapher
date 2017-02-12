@@ -2,10 +2,10 @@
 #define RANGED_GRAPH_H
 
 #include <cmath>
-#include "Magick.h"
 #include <iostream>
-#include <Helpers/Exceptions.h>
-#include <Helpers/Resources.h>
+#include <Magick++.h>
+#include "Helpers/Exceptions.h"
+#include "Helpers/Resources.h"
 #include "Helpers/UserDefinedLiterals.h"
 
 static_assert(sizeof(long double) > sizeof(double), "RangedGraph requires support for extended-precision floating \

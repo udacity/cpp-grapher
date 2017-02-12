@@ -6,8 +6,7 @@ set(SOURCE_FILES
         ${THIRD_PARTY_SOURCE_FILES}
         ${HELPERS_SOURCE_FILES}
         ../RangedGraph/RangedGraph.cpp
-        ../RangedGraph/RangedGraph.h
-        ../3rdParty/tinyutf7.h)
+        ../RangedGraph/RangedGraph.h)
 
 add_library(CppGrapher ${SOURCE_FILES})
 
