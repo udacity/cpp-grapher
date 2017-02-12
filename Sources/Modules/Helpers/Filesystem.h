@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include <fstream>
-#include "tinyutf8.h"
+#include "tinyutf8/tinyutf8.h"
 #include "Resources.h"
 #include "Helpers/Exceptions.h"
 
