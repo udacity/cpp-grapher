@@ -25,6 +25,7 @@ namespace ranged_graph
     using PointCoord = std::pair<double, double>;
     using PixelCoord = std::pair<size_t, size_t>;
     using Span2D = std::pair<double, double>;
+    using PixelSpan2D = std::pair<size_t, size_t>;
 
      /// Ensures a double is a value; throws if it is a not-a-number or infinity.
      /// @param n[in]                       The value to be validated.
@@ -77,7 +78,10 @@ namespace ranged_graph
     public:
         /// Default graph size convenience constant (in pixels).  Defined in RangedGraph.cpp.  To be consumed directly by
         /// ImageMagick.
-        static const std::string DEFAULT_GRAPH_CANVAS_SIZE;
+        static const std::string DEFAULT_CANVAS_SIZE;
+        static const Magick::Color DEFAULT_CANVAS_COLOR;
+        static const Magick::Color DEFAULT_AXIS_COLOR;
+        static const size_t CANVAS_MARGIN_PIXELS;
 
         /// Constructor.
         /// @param graphCanvasSize  Accepting a std::string of the form "wxh" where w is the width of of the graph and
@@ -103,10 +107,9 @@ namespace ranged_graph
 #ifdef RANGED_GRAPH_ACCESS_PRIVATES
         friend class ::TestHelper;
 #endif
-
         long double pointsPerPixel_;
         Range2D range2D_;
-        Magick::Image image_;
+        Magick::Image canvas_;
 
         //Ensure a given Range2D contains no null ranges
         RangedGraph ValidateGraphRange(const Range2D& GraphPointRange) const;
@@ -117,16 +120,14 @@ namespace ranged_graph
         //Given an aspect ratio of the graph image buffer and Range2D may differ, the mapping will ensure no clipping
         //by using the axis requiring the smallest scale as the scale for the entire range against the bitmap.  This
         //may leave freedom on the other axis, which, if true, will be modified so as to be centered for aesthetics.
-        Range2D MakeCenteredGraphRange(const Range2D& range2D,
-                                       const Span2D& span2D,
-                                       const double pointsPerPixel,
+        Range2D MakeCenteredGraphRange(const Range2D& range2D, const Span2D& span2D, const double pointsPerPixel,
                                        const Magick::Image& image) const;
 
         //Creates the ImageMagick canvas
-        Magick::Image MakeGraphCanvas(const std::string& graphCanvasSize) const;
+        Magick::Image MakeGraphCanvas(const std::string& graphCanvasSize, const Magick::Color& canvasColor) const;
 
         //Ensures the canvas has positive dimensions on both axes.
-        RangedGraph ValidateGraph(const Magick::Image& image) const;
+        RangedGraph ValidateGraph(const Magick::Image& canvas) const;
 
         //Ensures the requested point translated by the scale indicated by Range2D set in the constructor actually maps
         //to a pixel within the canvas boundaries.
@@ -141,7 +142,10 @@ namespace ranged_graph
 
         //Central location indicating the scale (in points per pixels) required to map the given Span2D to the given
         //image canvas
-        double CalculatePointsPerPixel(const Span2D& span2D, const Magick::Image& image) const;
+        double CalculatePointsPerPixel(const Span2D& span2D, const Magick::Image& canvas) const;
+
+        //Render x and y axes onto the graph canvas
+        void RenderAxes(Magick::Image& canvas, const Magick::Color& axisColor, const Range2D& range2D) const;
     };
 }}
 

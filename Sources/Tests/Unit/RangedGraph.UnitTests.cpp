@@ -64,10 +64,13 @@ SCENARIO("Continuous-to-Discrete mapping (CDM) functionality")
         }
     }
 
-    GIVEN("a RangedGraph instance set to render a 3x3 (9-pixel) canvas ranging from -1 to 1 on both x and y axes")
+    GIVEN("a RangedGraph instance set to render a net 3x3 (9-pixel) canvas ranging from -1 to 1 on both x and y axes")
     {
         auto helper = TestHelper();
-        auto rangedGraph = RangedGraph("3x3", MakeRange2D(-1, 1));
+        auto rangedGraph = RangedGraph(std::to_string(RangedGraph::CANVAS_MARGIN_PIXELS * 2 + 3) +
+                                           "x" +
+                                           std::to_string(RangedGraph::CANVAS_MARGIN_PIXELS * 2 + 3),
+                                       MakeRange2D(-1, 1));
         auto beforeImage = rangedGraph.GetImage();
 
         WHEN("rendering a black pixel at point (0,0)")
@@ -82,24 +85,24 @@ SCENARIO("Continuous-to-Discrete mapping (CDM) functionality")
                 REQUIRE(deltas.size() == 1);
             }
 
-            AND_THEN("the differing pixel should be white")
-            {
-                REQUIRE(diffImage.pixelColor(deltas.front().first, deltas.front().second) == Color(0xff, 0xff, 0xff));
-            }
-
             AND_THEN("the differing pixel should be at pixel (1,1)--the center pixel of a 3x3 bitmap")
             {
-                REQUIRE(afterImage.rows() == 3);
-                REQUIRE(afterImage.columns() == 3);
-                REQUIRE(diffImage.pixelColor(1, 1) == Color(0xff, 0xff, 0xff));
+                auto doubleMargin = RangedGraph::CANVAS_MARGIN_PIXELS * 2;
+                REQUIRE(afterImage.rows() - doubleMargin == 3);
+                REQUIRE(afterImage.columns() - doubleMargin == 3);
+                REQUIRE(diffImage.pixelColor(RangedGraph::CANVAS_MARGIN_PIXELS + 1,
+                                             RangedGraph::CANVAS_MARGIN_PIXELS + 1) != Color(0, 0, 0));
             }
         }
     }
 
-    GIVEN("a 3x3 RangedGraph with 4:3 points per pixel")
+    GIVEN("a net 3x3 RangedGraph with 4:3 points per pixel")
     {
         auto helper = TestHelper();
-        auto graph = RangedGraph("3x3", MakeRange2D(-4, 4));
+        auto graph = RangedGraph(std::to_string(RangedGraph::CANVAS_MARGIN_PIXELS * 2 + 3) +
+                                     "x" +
+                                     std::to_string(RangedGraph::CANVAS_MARGIN_PIXELS * 2 + 3),
+                                 MakeRange2D(-4, 4));
         auto beforeImage = graph.GetImage();
 
         WHEN("rendering a black pixel at point (-2.5, 1)")
@@ -114,17 +117,37 @@ SCENARIO("Continuous-to-Discrete mapping (CDM) functionality")
                 REQUIRE(deltas.size() == 1);
             }
 
-            AND_THEN("the differing pixel should be white")
-            {
-                REQUIRE(diffImage.pixelColor(deltas.front().first, deltas.front().second) == Color(0xff, 0xff, 0xff));
-            }
-
             AND_THEN("the differing pixel should be at pixel (0,1) of a 3x3 bitmap")
             {
-                REQUIRE(afterImage.rows() == 3);
-                REQUIRE(afterImage.columns() == 3);
-                auto foo = diffImage.pixelColor(0, 1);
-                REQUIRE(diffImage.pixelColor(0, 1) == Color(0xff, 0xff, 0xff));
+                auto doubleMargin = RangedGraph::CANVAS_MARGIN_PIXELS * 2;
+                REQUIRE(afterImage.rows() - doubleMargin == 3);
+                REQUIRE(afterImage.columns() - doubleMargin == 3);
+                REQUIRE(diffImage.pixelColor(RangedGraph::CANVAS_MARGIN_PIXELS + 0,
+                                             RangedGraph::CANVAS_MARGIN_PIXELS + 1) != Color(0, 0, 0));
+            }
+        }
+    }
+}
+
+SCENARIO("Axes and labels")
+{
+    GIVEN("a valid RangedGraph with no points rendered")
+    {
+        auto helper = TestHelper();
+        auto graph = RangedGraph(RangedGraph::DEFAULT_CANVAS_SIZE, MakeRange2D(-1, 1));
+
+        WHEN("the canvas is examined")
+        {
+            auto image = graph.GetImage();
+
+            THEN("there should be axis lines visible at the graph origin, and at the limit of x and y axes")
+            {
+                REQUIRE(image.pixelColor(RangedGraph::CANVAS_MARGIN_PIXELS,
+                                         image.rows() - RangedGraph::CANVAS_MARGIN_PIXELS) != Color(0xff, 0xff, 0xff));
+                REQUIRE(image.pixelColor(image.columns() - RangedGraph::CANVAS_MARGIN_PIXELS,
+                                         image.rows() - RangedGraph::CANVAS_MARGIN_PIXELS) != Color(0xff, 0xff, 0xff));
+                REQUIRE(image.pixelColor(RangedGraph::CANVAS_MARGIN_PIXELS,
+                                         RangedGraph::CANVAS_MARGIN_PIXELS) != Color(0xff, 0xff, 0xff));
             }
         }
     }

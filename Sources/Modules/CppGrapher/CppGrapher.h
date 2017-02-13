@@ -134,7 +134,7 @@ private:
     /// @param pixelSizeDesc    A "width x height" (or "widthxheight") string accepted by ImageMagick to determine
     ///                         the pixel dimensions of the ranged graph bitmap.
     /// @returns                A ranged bitmap
-    //Magick::Image MakeGraphCanvas(const std::string& pixelSizeDesc = DEFAULT_GRAPH_CANVAS_SIZE) const;
+    //Magick::Image MakeGraphCanvas(const std::string& pixelSizeDesc = DEFAULT_CANVAS_SIZE) const;
 
     /// Iterates through the provided collection of data points and places a colored pixel on the provided ranged graph
     /// for each data point in the list.  This method automatically uses a unique color for each different
