@@ -2,10 +2,12 @@
 #define CPP_GRAPHER_H
 
 #include <vector>
+#include <array>
 #include <fstream>
 #include <Magick++.h>
 //save compiler switches - external libs often can't handle ultra-strict compiler settings
 #include "tinyutf8/tinyutf8.h"
+#include "Helpers/UserDefinedLiterals.h"
 
 /// The application logic is written as a library to enable flexible packaging (static or dynamic linking) and
 /// execution from a test runner, application driver (this class), or other driver.  Entry point for execution is
@@ -49,9 +51,13 @@ public:
 
 private:
 //Conditionally grant test framework access to privates
-#ifdef CPP_GRAPHER_COMPILE_TESTS
+#ifdef TEST_HELPER_ACCESS_PRIVATES
     friend class TestHelper;
 #endif
+    size_t hueAngleIdx = 0;
+    std::vector<double> hueAngles {};
+    size_t hueAngleOffsetIdx = 0;
+    std::array<f64, 3> hueAngleOffsets {0, static_cast<f64>(1_f80 / 3), static_cast<f64>(2_f80 / 3)};
 
     /// Enum mapping argument position to argument meaning, plus argument count sentinel.
     enum ArgsIndexNames : size_t
@@ -145,6 +151,8 @@ private:
     ///                         points to.
     /// @returns                Ranged graph with data points and legend rendered.
     Magick::Image GraphDataPoints(const std::vector<KalmanFilterDataPoint>& dataPoints) const;
+
+    Magick::Color GetUniqueColor();
 };
 
 /// @example ../Tests/Unit/Lib.UnitTests.cpp

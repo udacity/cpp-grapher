@@ -68,7 +68,7 @@ namespace ranged_graph
 
     RangedGraph RangedGraph::ValidateGraph(const Image& canvas) const
     {
-        if(CANVAS_MARGIN_PIXELSres * 2 >= canvas.rows() || CANVAS_MARGIN_PIXELS * 2 >= canvas.columns())
+        if(CANVAS_MARGIN_PIXELS * 2 >= canvas.rows() || CANVAS_MARGIN_PIXELS * 2 >= canvas.columns())
         {
             auto pixelCount = utf8_string(std::to_string(static_cast<size_t>(ceil(CANVAS_MARGIN_PIXELS * 2) + 1)));
             throw InvalidGraphSizeException(utf8_string(Msg::InvalidArg::GRAPH_MUST_BE_AT_LEAST_PREFIX) +
@@ -180,7 +180,7 @@ namespace ranged_graph
 
         for(auto i = 0; i <= axisSegments; ++i)
         {
-            //x-axis labels
+            //render x-axis labels
             canvas.strokeWidth(canvasBoldStrokeWidth);
             canvas.strokeAntiAlias(false);
             canvas.draw(DrawableLine(axisPos.first, origin.second, axisPos.first, origin.second + 3));
@@ -191,7 +191,7 @@ namespace ranged_graph
             axisValue.first += axisValueInterval.first;
             axisPos.first += static_cast<size_t>(axisPosInterval.first);
 
-            //y-axis labels
+            //render y-axis labels
             canvas.strokeWidth(canvasBoldStrokeWidth);
             canvas.strokeAntiAlias(false);
             canvas.draw(DrawableLine(origin.first - 3, axisPos.second, origin.first, axisPos.second));

@@ -12,7 +12,7 @@ static_assert(sizeof(long double) > sizeof(double), "RangedGraph requires suppor
     point to operate correctly.  Extended-precision is not supported by your compiler and/or hardware platform.");
 
 //Forward declaration required to conditionally grant test framework access to privates
-#ifdef RANGED_GRAPH_ACCESS_PRIVATES
+#ifdef TEST_HELPER_ACCESS_PRIVATES
 class TestHelper;
 #endif
 
@@ -104,7 +104,7 @@ namespace ranged_graph
 
     private:
 //Conditionally grant test framework access to privates
-#ifdef RANGED_GRAPH_ACCESS_PRIVATES
+#ifdef TEST_HELPER_ACCESS_PRIVATES
         friend class ::TestHelper;
 #endif
         long double pointsPerPixel_;
