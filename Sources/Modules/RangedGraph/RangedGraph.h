@@ -39,11 +39,11 @@ namespace ranged_graph
     }
 
     /// Convenience function to generate a 2D range of values; suitable for use with RangedGraph's constructor.
-    /// @param xMin                 Minmum x-coordinate value in the set to be graphed.
-    /// @param xMax                 Maximum x-coordinate value in the set to be graphed.
-    /// @param yMin                 Minimum y-coordinate value in the set to be graphed.
-    /// @param yMax                 Maximum y-coordinate value in the set to be graphed.
-    /// @returns                    A 2D Range representing the span of x and y coordinate values to be graphed.
+    /// @param xMin                         Minmum x-coordinate value in the set to be graphed.
+    /// @param xMax                         Maximum x-coordinate value in the set to be graphed.
+    /// @param yMin                         Minimum y-coordinate value in the set to be graphed.
+    /// @param yMax                         Maximum y-coordinate value in the set to be graphed.
+    /// @returns                            A 2D Range representing the span of x and y coordinate values to be graphed.
     inline Range2D MakeRange2D(const double xMin, const double xMax, const double yMin, const double yMax)
     {
         ValidateDouble(xMin);
@@ -54,14 +54,38 @@ namespace ranged_graph
         return Range2D(Range(xMin, xMax), Range(yMin, yMax));
     }
 
-    /// Convenience function to generate a 2D graph from a pair of values; suitable for use with RangedGraph's
+    /// Convenience function to generate a 2D range from a pair of values; suitable for use with RangedGraph's
     /// constructor.
-    /// @param min                  Minimum x- and y-coordinate values in the set to be graphed.
-    /// @param max                  Maximum x- and y-coordinate values in the set to be graphed.
-    /// @returns                    A 2D Range representing the span of x and y coordinate values to be graphed.
+    /// @param min                          Minimum x- and y-coordinate values in the set to be graphed.
+    /// @param max                          Maximum x- and y-coordinate values in the set to be graphed.
+    /// @returns                            A 2D Range representing the span of x and y coordinate values to be graphed.
     inline Range2D MakeRange2D(const double min, const double max)
     {
         return MakeRange2D(min, max, min, max);
+    }
+
+    /// Convenience function to generate a 2D range from a list of values.  The range will scan the provided list
+    /// for max and min values of both x and y, and use those values to create a Range2D.  Performance is O(n).
+    ///
+    /// @param coords                       A std::vector of PointCoords to be scanned for max and min of both x and y.
+    /// @returns                            A 2D Range representing the span of x and y coordinates in @coords.
+    /// @throws InvalidArgumentException    If coords is empty.
+    inline Range2D MakeRange2D(const std::vector<PointCoord>& coords)
+    {
+        if (coords.size() == 0) { throw InvalidArgumentException(Msg::InvalidArg::EMPTY_COORD_LIST_RECEIVED); }
+
+        auto xMinMax = Span2D(coords.front().first, coords.front().first);
+        auto yMinMax = Span2D(coords.front().second, coords.front().second);
+        std::for_each(std::begin(coords) + 1, std::end(coords), [&](const PointCoord& coord)
+            {
+                if(coord.first < xMinMax.first) { xMinMax.first = coord.first; }
+                if(coord.first > xMinMax.second) { xMinMax.second = coord.first; }
+
+                if(coord.second < yMinMax.first) { yMinMax.first = coord.second; }
+                if(coord.second > yMinMax.second) { yMinMax.second = coord.second; }
+            });
+
+        return MakeRange2D(xMinMax.first, xMinMax.second, yMinMax.first, yMinMax.second);
     }
 
     /// Floating point numbers (single, double or extended-precision) cannot be reliably compared for equality.  This is

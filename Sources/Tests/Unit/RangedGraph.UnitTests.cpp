@@ -129,6 +129,44 @@ SCENARIO("Continuous-to-Discrete mapping (CDM) functionality")
     }
 }
 
+SCENARIO("Range maker")
+{
+    GIVEN("an empty list of points to be ranged")
+    {
+        auto coords = std::vector<PointCoord>();
+
+        WHEN("a range is computed from that list")
+        {
+            THEN("an exception should be thrown")
+            {
+                REQUIRE_THROWS_AS(MakeRange2D(coords), InvalidArgumentException);
+            }
+        }
+    }
+
+    GIVEN("a valid list of points to be ranged")
+    {
+        auto helper = TestHelper();
+        auto coords = std::vector<PointCoord> {PointCoord(-5, 3),
+                                               PointCoord(5, -2),
+                                               PointCoord(2.5, -4),
+                                               PointCoord(0, 4)};
+
+        WHEN("a range is computed from that list")
+        {
+            auto limits = MakeRange2D(coords);
+
+            THEN("the mins and maxes of x and y have been correctly determined")
+            {
+                REQUIRE(AreApproxEqual(limits.first.first, -5_f64)); //x-min
+                REQUIRE(AreApproxEqual(limits.first.second, 5_f64)); //x-max
+                REQUIRE(AreApproxEqual(limits.second.first, -4_f64)); //y-min
+                REQUIRE(AreApproxEqual(limits.second.second, 4_f64)); //y-max
+            }
+        }
+    }
+}
+
 SCENARIO("Axes and labels")
 {
     GIVEN("a valid RangedGraph with no points rendered")
