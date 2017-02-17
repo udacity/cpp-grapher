@@ -40,8 +40,8 @@ KalmanFilterDataPoint CppGrapher::DeserializeDataLine(const utf8_string& line) c
     auto dataPoint = KalmanFilterDataPoint();
     auto idx = utf8_string::size_type(0);
     dataPoint.name = DeserializeDataName(line, idx);
-    dataPoint.x = DeserializeDataPoint(line, idx);
-    dataPoint.y = DeserializeDataPoint(line, idx);
+    dataPoint.coord.first = DeserializeDataPoint(line, idx);
+    dataPoint.coord.second = DeserializeDataPoint(line, idx);
 
     return dataPoint;
 }

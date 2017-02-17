@@ -4,12 +4,30 @@
 #include "Helpers/Exceptions.h"
 #include "Helpers/Filesystem.h"
 
+using namespace udacity;
+using namespace ranged_graph;
+
 class TestHelper : CppGrapher
 {
 public:
     Magick::Color GetUniqueColor()
     {
         return CppGrapher::GetUniqueColor();
+    }
+
+    void ValidateArgs(std::vector<utf8_string> args)
+    {
+        CppGrapher::ValidateArgs(args);
+    }
+
+    std::vector<KalmanFilterDataPoint> DeserializeDataPoints(utf8_string filename)
+    {
+        return CppGrapher::DeserializeDataPoints(filename);
+    }
+
+    Magick::Image GraphDataPoints(std::vector<KalmanFilterDataPoint> dataPoints)
+    {
+        return CppGrapher::GraphDataPoints(dataPoints);
     }
 };
 

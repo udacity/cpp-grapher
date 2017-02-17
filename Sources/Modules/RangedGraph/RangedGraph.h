@@ -124,7 +124,14 @@ namespace ranged_graph
 
         /// Returns a copy of the class' image buffer to the caller.
         /// @returns                A copy of the RangedGraph's internal image buffer.
-        Magick::Image GetImage() const;
+        Magick::Image GetCanvas() const;
+
+        /// Draw a colored label onto the graph to serve as a legend.
+        ///
+        /// @param label            The UTF-8 string to add to the graph.
+        /// @param color            The Magick::Color to render the label in.
+        /// @returns                This RangedGraph instance.
+        RangedGraph AddLegendItem(utf8_string label, Magick::Color color);
 
     private:
 //Conditionally grant test framework access to privates
@@ -134,6 +141,8 @@ namespace ranged_graph
         long double pointsPerPixel_;
         Range2D range2D_;
         Magick::Image canvas_;
+        size_t legendYLine = 1;
+
 
         //Ensure a given Range2D contains no null ranges
         RangedGraph ValidateGraphRange(const Range2D& GraphPointRange) const;

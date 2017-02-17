@@ -5,9 +5,9 @@
 #include <array>
 #include <fstream>
 #include <Magick++.h>
-//save compiler switches - external libs often can't handle ultra-strict compiler settings
 #include "tinyutf8/tinyutf8.h"
 #include "Helpers/UserDefinedLiterals.h"
+#include "RangedGraph.h"
 
 /// The application logic is written as a library to enable flexible packaging (static or dynamic linking) and
 /// execution from a test runner, application driver (this class), or other driver.  Entry point for execution is
@@ -15,7 +15,7 @@
 struct KalmanFilterDataPoint
 {
     utf8_string name;
-    double x, y;
+    udacity::ranged_graph::PointCoord coord;
 };
 
 class CppGrapher
@@ -30,14 +30,15 @@ public:
     /// ensures these kinds of issues cannot happen.
     ///
     /// All strings managed by this app are strongly-typed UTF-8 strings, which permit the use and proper operation
-    /// of any Unicode code point.  All operations on strings are Unicode-compliant, except for equality, which will
-    /// only perform a literal compare, not a Unicode-semantic compare (the latter is when a set of code points is
-    /// considered equal to some other code point or set of code points).
+    /// of any Unicode code point and prevent accidental use by non-UTF-8-aware operators.  All operations on strings
+    /// are Unicode-compliant, except for equality, which will only perform a literal compare, not a Unicode-semantic
+    /// compare (the latter is when a set of code points is considered equal to some other code point or set of code
+    /// points).
     ///
-    /// No C or C++ string operators are UTF-8-aware, and ignoring this can lead to both surprising and incorrect
-    /// behavior with the added bonus of the problem being completely silent (until it manifests in some way).
-    /// To deal with this, this application uses a strongly-typed UTF-8 string class to prevent accidental use of
-    /// non-UTF-8-aware string manipulation functionality.
+    /// While C and C++ strings can hold UTF-8 data, no C or C++ string operators are UTF-8-aware, and ignoring this can
+    /// lead to both surprising and incorrect behavior with the added bonus of the problem being completely silent
+    /// (until it manifests in some way).  To deal with this, this application uses a strongly-typed UTF-8 string class
+    /// to prevent accidental use of non-UTF-8-aware string manipulation functionality.
     ///
     /// Note: this kind of issue is known as semantic types and can lead to real issues when ignored or not properly
     /// handled (eg. http://www.cnn.com/TECH/space/9909/30/mars.metric.02)
@@ -52,7 +53,7 @@ public:
 private:
 //Conditionally grant test framework access to privates
 #ifdef TEST_HELPER_ACCESS_PRIVATES
-    friend class TestHelper;
+    friend class ::TestHelper;
 #endif
     size_t hueAngleIdx = 0;
     std::vector<double> hueAngles {};
@@ -139,7 +140,7 @@ private:
     ///
     /// @param pixelSizeDesc    A "width x height" (or "widthxheight") string accepted by ImageMagick to determine
     ///                         the pixel dimensions of the ranged graph bitmap.
-    /// @returns                A ranged bitmap
+    /// @returns                A ranged bitmap.
     //Magick::Image MakeGraphCanvas(const std::string& pixelSizeDesc = DEFAULT_CANVAS_SIZE) const;
 
     /// Iterates through the provided collection of data points and places a colored pixel on the provided ranged graph
@@ -150,12 +151,31 @@ private:
     /// @param inGraph[in]      Ranged graph (ie. bitmap canvas) serving as the template graph for rendering data
     ///                         points to.
     /// @returns                Ranged graph with data points and legend rendered.
-    Magick::Image GraphDataPoints(const std::vector<KalmanFilterDataPoint>& dataPoints) const;
+    Magick::Image GraphDataPoints(std::vector<KalmanFilterDataPoint> dataPoints);
 
+    /// Return a unique color.
+    ///
+    /// @returns                A Magick::Color() that this instance has never returned before.
     Magick::Color GetUniqueColor();
+
+    /// Add a label to a graph, if the label is not null and not composed entirely of whitespace (ie. blank).
+    ///
+    /// @param label            The UTF-8 string to add to the graph.
+    /// @param color            The Magick::Color to render the label in.
+    /// @param graph            The RangedGraph to render the label onto.
+    /// @returns                This CppGrapher instance.
+    CppGrapher AddNonWhitespaceLabelToLegend(const utf8_string& label, const Magick::Color& color,
+                                             udacity::ranged_graph::RangedGraph& graph);
+
+    /// Examines the last code-points (characters) of a UTF-8 string to determine if it ends with .png.  If it does not,
+    /// returns the string with .png appended.
+    ///
+    /// @param filename         UTF-8 string which will be either verified to end with .png wor will have .png appended.
+    /// @returns                UTF-8 string which is guaranteed to end with .png.
+    utf8_string EnsureFilenameEndsWithPng(utf8_string filename);
 };
 
-/// @example ../Tests/Unit/Lib.UnitTests.cpp
+/// @example ../Tests/Unit/CppGrapher.Visualization.UnitTests.cpp
 /// This is an example of how to use the CppGrapher class.
 
 #endif //CPP_GRAPHER_H

@@ -1,4 +1,6 @@
 #include <iostream>
+#include <sstream>
+#include <iomanip>
 #include "Helpers/Exceptions.h"
 #include "Helpers/Resources.h"
 #include "RangedGraph.h"
@@ -10,8 +12,12 @@ namespace ranged_graph
 {
     const std::string RangedGraph::DEFAULT_CANVAS_SIZE = "1280x720";
     const size_t RangedGraph::CANVAS_MARGIN_PIXELS = 64;
+    const size_t AXIS_LABEL_PRECISION = 3;
+    const size_t LEGEND_FONT_SIZE_POINTS = 14;
+    const size_t PIXELS_PER_LINE = 18;
     const Color RangedGraph::DEFAULT_CANVAS_COLOR = Color(0xff, 0xff, 0xff);
     const Color RangedGraph::DEFAULT_AXIS_COLOR = Color(0x20, 0x20, 0x20);
+    const std::string UTF_8 = "UTF-8";
 
     template<typename T>
     bool AreApproxEqual(T f1, T f2)
@@ -142,7 +148,7 @@ namespace ranged_graph
                     std::fabs(static_cast<f80>(pointCoord.second) - range2D_.second.first) / pointsPerPixel_));
     }
 
-    Image RangedGraph::GetImage() const
+    Image RangedGraph::GetCanvas() const
     {
         return canvas_;
     }
@@ -178,6 +184,8 @@ namespace ranged_graph
         auto textOffset = std::pair<PixelSpan2D, PixelSpan2D>(PixelSpan2D(-3, 14),
                                                               PixelSpan2D(-CANVAS_MARGIN_PIXELS + 3, + 3)); //Offsets determined empirically
 
+        auto os = std::ostringstream();
+
         for(auto i = 0; i <= axisSegments; ++i)
         {
             //render x-axis labels
@@ -186,8 +194,11 @@ namespace ranged_graph
             canvas.draw(DrawableLine(axisPos.first, origin.second, axisPos.first, origin.second + 3));
             canvas.strokeWidth(canvasThinStrokeWidth);
             canvas.strokeAntiAlias(true);
+            os.str(std::string());
+            os.clear();
+            os << std::setprecision(AXIS_LABEL_PRECISION) << axisValue.first;
             canvas.draw(DrawableText(axisPos.first + textOffset.first.first, origin.second + textOffset.first.second,
-                                     std::to_string(axisValue.first), "UTF-8"));
+                                     os.str(), UTF_8));
             axisValue.first += axisValueInterval.first;
             axisPos.first += static_cast<size_t>(axisPosInterval.first);
 
@@ -197,10 +208,36 @@ namespace ranged_graph
             canvas.draw(DrawableLine(origin.first - 3, axisPos.second, origin.first, axisPos.second));
             canvas.strokeWidth(canvasThinStrokeWidth);
             canvas.strokeAntiAlias(true);
+            os.str(std::string());
+            os.clear();
+            os << std::setprecision(AXIS_LABEL_PRECISION) << axisValue.second;
             canvas.draw(DrawableText(origin.first + textOffset.second.first, axisPos.second + textOffset.second.second,
-                                     std::to_string(axisValue.second), "UTF-8"));
+                                     os.str(), UTF_8));
             axisValue.second += axisValueInterval.second;
             axisPos.second -= static_cast<size_t>(axisPosInterval.second);
         }
+    }
+
+    RangedGraph RangedGraph::AddLegendItem(utf8_string label, Color color)
+    {
+        const auto QUARTER_MARGIN = CANVAS_MARGIN_PIXELS / 4;
+        auto drawList = std::vector<Drawable>();
+        drawList.push_back(DrawableStrokeWidth(1));
+        drawList.push_back(DrawableStrokeColor(color));
+        drawList.push_back(DrawableStrokeOpacity(0.8));
+        drawList.push_back(DrawableFillColor(color));
+        drawList.push_back(DrawableFillOpacity(0.8));
+        drawList.push_back(DrawableTextAntialias(true));
+        drawList.push_back(DrawableTextAlignment(AlignType::RightAlign));
+        drawList.push_back(DrawableFont("sans", StyleType::NormalStyle, 400, StretchType::NormalStretch));
+        drawList.push_back(DrawablePointSize(LEGEND_FONT_SIZE_POINTS));
+        drawList.push_back(
+            DrawableText(canvas_.columns() - QUARTER_MARGIN,
+                         legendYLine++ * PIXELS_PER_LINE + QUARTER_MARGIN,
+                         label.cpp_str(),
+                         UTF_8));
+        canvas_.draw(drawList);
+
+        return *this;
     }
 }}
