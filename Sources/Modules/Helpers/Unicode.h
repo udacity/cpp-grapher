@@ -60,6 +60,6 @@ public:
                                                             UnicodeLiterals::IDEOGRAPHIC_SPACE };
 };
 
-constexpr utf8_string::value_type UnicodeLiterals::WHITESPACE[];
+inline constexpr utf8_string::value_type UnicodeLiterals::WHITESPACE[];
 
 #endif //UNICODE_H

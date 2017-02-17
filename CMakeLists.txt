@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.5)
 project(cpp-grapher)
 
 set(CMAKE_CXX_STANDARD_REQUIRED)
-set(CMAKE_CXX_STANDARD 14 )
+set(CXX_STANDARD c++1z)
 
 set(MAGICK_DIR "ImageMagick-7")
 include_directories(/opt/local/include/${MAGICK_DIR} /usr/local/include/${MAGICK_DIR} /opt/include/${MAGICK_DIR} /usr/include/${MAGICK_DIR})

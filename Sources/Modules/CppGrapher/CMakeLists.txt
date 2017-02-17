@@ -1,8 +1,13 @@
+add_subdirectory(Deserialization)
+add_subdirectory(Validation)
+add_subdirectory(Visualization)
+
 set(SOURCE_FILES
         CppGrapher.cpp
         CppGrapher.h
-        Validation/Argument.cpp
-        Deserialization/KalmanFilterDataFile.cpp
+        ${VALIDATION_SOURCE_FILES}
+        ${DESERIALIZATION_SOURCE_FILES}
+        ${VISUALIZATION_SOURCE_FILES}
         ${THIRD_PARTY_SOURCE_FILES}
         ${HELPERS_SOURCE_FILES}
         ../RangedGraph/RangedGraph.cpp
