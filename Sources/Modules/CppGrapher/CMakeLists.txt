@@ -23,4 +23,12 @@ target_include_directories(CppGrapher PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/../3rdParty/
         /usr/local/include/ImageMagick-7/)
 
-target_link_libraries (CppGrapher PUBLIC RangedGraph Magick++-7.Q8HDRI)
+execute_process(OUTPUT_VARIABLE Q_VERSION
+                RESULT_VARIABLE Q_RESULT_CODE
+                COMMAND sh ../Scripts/magick_q.sh)
+
+if(Q_RESULT_CODE GREATER 0)
+        message(FATAL_ERROR "Error getting ImageMagick Q version. Is ImageMagick 7 installed? You'll need to install from source.")
+endif(Q_RESULT_CODE GREATER 0)
+
+target_link_libraries (CppGrapher PUBLIC RangedGraph Magick++-7.Q${Q_VERSION}HDRI)
